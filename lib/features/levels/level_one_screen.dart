@@ -25,31 +25,27 @@ class LevelOneScreenView extends ConsumerStatefulWidget {
 }
 
 class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
-  bool isTapping = false;
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     final position = ref.watch(positionProvider);
+    final player = ref.watch(playerProvider);
     return Stack(
       children: [
-        ImageContainer(
-          imagePath: 'assets/imgs/level_one/background.png',
-          width: width,
-        ),
-        Positioned(
-          top: height / 2,
-          left: 400,
-          child: IconButton(
-            onPressed: () {
-              setState(() {
-                isTapping = true;
-                ref.read(playerProvider.notifier).walk(true);
-                ref.read(positionProvider.notifier).changeX(10, width);
-              });
-            },
-            icon: const Icon(Icons.chevron_left),
+        GestureDetector(
+          onTapDown: (d){
+            ref.read(playerProvider.notifier).walk(true);
+            ref.read(positionProvider.notifier).changeX(10, width);
+          },
+          onTapUp: (d){
+            ref.read(playerProvider.notifier).walk(false);
+            ref.read(positionProvider.notifier).changeX(10, width);
+          },
+          child: ImageContainer(
+            imagePath: 'assets/imgs/level_one/background.png',
+            width: width,
           ),
         ),
         Positioned(
@@ -66,7 +62,7 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
           left: position.x,
           child: AnimatedSwitcher(
             duration: const Duration(seconds: 1),
-            child: !isTapping
+            child: !player.isWalking
                 ? ImageContainer(
                     imagePath: 'assets/imgs/player/stay.gif',
                     width: width * 0.035,
