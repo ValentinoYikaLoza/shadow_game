@@ -1,4 +1,3 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final positionProvider =
@@ -10,25 +9,69 @@ class PositionNotifier extends StateNotifier<PositionState> {
   PositionNotifier(this.ref) : super(PositionState());
   final StateNotifierProviderRef ref;
 
-    changeX(double distance, double width){
-      double newX = state.x;
-      
-      if (newX < width - 100){
-        newX += distance;
-      }
+  moveRight(double distance, double limit) {
+    double newX = state.x;
 
-      state = state.copyWith(
-        x: newX,
-      );
+    if (newX < limit) {
+      newX += distance;
     }
+
+    state = state.copyWith(
+      x: newX,
+    );
   }
+
+  moveLeft(double distance, double limit) {
+    double newX = state.x;
+
+    if (newX > limit) {
+      newX -= distance;
+    }
+
+    state = state.copyWith(
+      x: newX,
+    );
+  }
+
+  moveUp(double distance, double limit) {
+    double newY = state.y;
+
+    if (newY > limit) newY -= distance;
+
+    state = state.copyWith(
+      y: newY,
+    );
+  }
+
+  moveDown(double distance, double limit) {
+    double newY = state.y;
+
+    if (newY < limit) newY += distance;
+
+    state = state.copyWith(
+      y: newY,
+    );
+  }
+
+  changeX(double newX) {
+    state = state.copyWith(
+      y: newX,
+    );
+  }
+
+  changeY(double newY) {
+    state = state.copyWith(
+      y: newY,
+    );
+  }
+}
 
 class PositionState {
   final double x;
-  final double? y;
+  final double y;
   PositionState({
     this.x = 50,
-    this.y,
+    this.y = 45,
   });
 
   PositionState copyWith({
