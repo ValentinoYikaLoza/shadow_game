@@ -55,7 +55,7 @@ class PositionNotifier extends StateNotifier<PositionState> {
 
   changeX(double newX) {
     state = state.copyWith(
-      y: newX,
+      x: newX,
     );
   }
 

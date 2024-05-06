@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadow_game/features/home/lobby_screen.dart';
+import 'package:shadow_game/features/home/test_screen.dart';
 import 'package:shadow_game/features/levels/level_one_screen.dart';
 
 Future<String?> externalRedirect(
@@ -56,6 +57,19 @@ final appRouter = GoRouter(
             return CustomTransitionPage(
               key: state.pageKey,
               child: const LevelOneScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return transition(
+                    animation: animation, context: context, child: child);
+              },
+            );
+          }),
+      GoRoute(
+          path: '/test',
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const TestScreen(),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 return transition(

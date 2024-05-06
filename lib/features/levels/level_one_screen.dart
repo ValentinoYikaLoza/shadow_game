@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:shadow_game/features/shared/providers/provider.dart';
@@ -29,7 +28,10 @@ class LevelOneScreenView extends ConsumerStatefulWidget {
 }
 
 class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
+  final SwiperController backgroundController = SwiperController();
   Timer? _timer;
+  bool girar = false;
+  int itemCount = 1;
 
   Color colorRight = Colors.transparent;
   Color colorLeft = Colors.transparent;
@@ -40,34 +42,30 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
 
   startWalking(double distance, double limit, bool goingRight) {
     ref.read(playerProvider.notifier).walk(true);
+    final position = ref.watch(positionProvider);
     _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
       if (goingRight) {
         ref.read(positionProvider.notifier).moveRight(distance, limit);
+        if (position.x > limit - 100) {
+          backgroundController.next();
+        }
       } else {
         ref.read(positionProvider.notifier).moveLeft(distance, limit);
+        if (position.x < limit + 100) {
+          backgroundController.previous();
+        }
       }
     });
   }
 
   startJumping(double distance, double limit) {
     ref.read(playerProvider.notifier).jump(true);
-    _timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
-      if (distance > 0) {
-        ref.read(positionProvider.notifier).moveUp(distance, limit);
-      } else {
-        ref.read(positionProvider.notifier).moveDown(distance, limit);
-      }
-      // ref.read(positionProvider.notifier).moveDown(distanceY, 45);
-    });
+
+    ref.read(positionProvider.notifier).moveUp(distance, limit);
   }
 
   stopWalking() {
     ref.read(playerProvider.notifier).walk(false);
-    _timer?.cancel();
-  }
-
-  stopJumping() {
-    ref.read(playerProvider.notifier).jump(false);
     _timer?.cancel();
   }
 
@@ -85,6 +83,7 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
   @override
   void dispose() {
     _timer?.cancel();
+    backgroundController.dispose();
     super.dispose();
   }
 
@@ -122,11 +121,33 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
 
     return Stack(
       children: [
-        ImageContainer(
-          imagePath: 'assets/imgs/level_one/background.png',
+        SizedBox(
           width: width,
+          child: Swiper(
+            itemCount: 1,
+            controller: backgroundController,
+            loop: true,
+            // autoplay: true,
+            // physics: const FixedExtentScrollPhysics(),
+            // autoplayDelay: 30,
+            duration: 2000,
+            // onIndexChanged: (value) {
+            //   backgroundController.stopAutoplay();
+            // },
+            itemBuilder: (context, index) {
+              return ImageContainer(
+                imagePath: 'assets/imgs/level_one/background.png',
+                width: width,
+              );
+            },
+          ),
         ),
-        // ),
+        Positioned(
+          top: 50,
+          left: 50,
+          child: Text('x:${position.x}, y: ${position.y}'),
+        ),
+        // arriba
         Positioned(
           top: height / 2 + 50,
           left: width / 2 + 300,
@@ -139,13 +160,11 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
               setState(() {
                 colorUp = Colors.transparent;
                 ref.read(playerProvider.notifier).stay(true);
-                stopJumping();
               });
             },
             onTapCancel: () {
               colorUp = Colors.transparent;
               ref.read(playerProvider.notifier).stay(true);
-              stopJumping();
             },
             // ref.read(positionProvider.notifier).changeY(45);
             child: MouseRegion(
@@ -166,6 +185,7 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
             ),
           ),
         ),
+        // derecha izquierda
         Positioned(
           top: height / 2 + 60,
           left: width / 2 - 31 + 300,
@@ -174,7 +194,6 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
               setState(() {
                 colorDance = Colors.white.withOpacity(0.3);
                 ref.read(playerProvider.notifier).dance(true);
-                ref.read(positionProvider.notifier).changeY(43);
               });
             },
             onTapUp: (_) {
@@ -191,7 +210,6 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
                 ref.read(playerProvider.notifier).stay(true);
               });
             },
-            // ref.read(positionProvider.notifier).changeY(45);
             child: MouseRegion(
               onEnter: (_) {
                 setState(() {
@@ -211,6 +229,7 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
             ),
           ),
         ),
+        // abajo
         Positioned(
           top: height / 2 + 80 + 50,
           left: width / 2 + 300,
@@ -235,7 +254,6 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
                 ref.read(playerProvider.notifier).stay(true);
               });
             },
-            // ref.read(positionProvider.notifier).changeY(45);
             child: MouseRegion(
               onEnter: (_) {
                 setState(() {
@@ -254,6 +272,7 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
             ),
           ),
         ),
+        // centro
         Positioned(
           top: height / 2 + 41 + 50,
           left: width / 2 + 300,
@@ -278,7 +297,6 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
                 ref.read(playerProvider.notifier).stay(true);
               });
             },
-            // ref.read(positionProvider.notifier).changeY(45);
             child: MouseRegion(
               onEnter: (_) {
                 setState(() {
@@ -297,15 +315,16 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
             ),
           ),
         ),
+        // izquierda
         Positioned(
           top: height / 2 + 41 + 50,
           left: width / 2 - 41 + 300,
           child: GestureDetector(
             onTapDown: (_) {
               colorLeft = Colors.white.withOpacity(0.3);
-              setState(() {
-                startWalking(-10, 50, false);
-              });
+
+              girar = true;
+              startWalking(10, 50, false);
             },
             onTapUp: (_) {
               setState(() {
@@ -315,7 +334,6 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
             },
             onTapCancel: () {
               colorLeft = Colors.transparent;
-
               stopWalking();
             },
             // ref.read(positionProvider.notifier).changeY(45);
@@ -337,14 +355,15 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
             ),
           ),
         ),
+        // derecha
         Positioned(
           top: height / 2 + 41 + 50,
           left: width / 2 + 41 + 300,
           child: GestureDetector(
             onTapDown: (_) {
               colorRight = Colors.white.withOpacity(0.3);
-              ref.read(positionProvider.notifier).changeY(45);
               startWalking(10, width - 100, true);
+              girar = false;
             },
             onTapUp: (_) {
               setState(() {
@@ -356,7 +375,6 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
               colorRight = Colors.transparent;
               stopWalking();
             },
-            // ref.read(positionProvider.notifier).changeY(45);
             child: MouseRegion(
               onEnter: (_) {
                 setState(() {
@@ -375,6 +393,7 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
             ),
           ),
         ),
+        // boton de habilidades
         Positioned(
           top: (height / 2) + 150,
           left: (width / 2) - 85,
@@ -384,13 +403,17 @@ class LevelOneScreenViewState extends ConsumerState<LevelOneScreenView> {
             height: height * 0.06,
           ),
         ),
+        // jugador
         Positioned(
           top: height / 2 + position.y + 26,
           left: position.x,
+          // duration: const Duration(milliseconds: 200),
+          // curve: Curves.easeInOut,
           child: ImageContainer(
             imagePath: playerAnimation,
             width: redimension,
             height: height * 0.12,
+            girarHorizontalmente: girar,
           ),
         ),
       ],
