@@ -1,8 +1,8 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shadow_game/features/home/lobby_screen.dart';
-import 'package:shadow_game/features/home/test_screen.dart';
-import 'package:shadow_game/features/levels/level_one_screen.dart';
+import 'package:shadow_game/features/home/level_one_screen.dart';
+import 'package:shadow_game/features/home/start_screen.dart';
 
 Future<String?> externalRedirect(
     BuildContext context, GoRouterState state) async {
@@ -33,48 +33,35 @@ Widget transition({
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final appRouter = GoRouter(
-    navigatorKey: rootNavigatorKey,
-    initialLocation: '/level_one',
-    routes: [
-      GoRoute(
-        path: '/lobby',
+  navigatorKey: rootNavigatorKey,
+  initialLocation: '/level_one',
+  routes: [
+    GoRoute(
+      path: '/start',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: GameWidget(game: StartScreen()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+      redirect: externalRedirect,
+    ),
+    GoRoute(
+        path: '/level_one',
         pageBuilder: (context, state) {
           return CustomTransitionPage(
             key: state.pageKey,
-            child: const LobbyScreen(),
+            child: GameWidget(game: LevelOneScreen()),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return transition(
                   animation: animation, context: context, child: child);
             },
           );
-        },
-        redirect: externalRedirect,
-      ),
-      GoRoute(
-          path: '/level_one',
-          pageBuilder: (context, state) {
-            return CustomTransitionPage(
-              key: state.pageKey,
-              child: const LevelOneScreen(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return transition(
-                    animation: animation, context: context, child: child);
-              },
-            );
-          }),
-      GoRoute(
-          path: '/test',
-          pageBuilder: (context, state) {
-            return CustomTransitionPage(
-              key: state.pageKey,
-              child: const TestScreen(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return transition(
-                    animation: animation, context: context, child: child);
-              },
-            );
-          }),
-    ]);
+        }),
+  ],
+);

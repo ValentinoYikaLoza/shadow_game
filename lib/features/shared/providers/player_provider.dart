@@ -1,9 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final playerProvider =
-    StateNotifierProvider<PlayerNotifier, PlayerState>((ref) {
+enum PlayerAction { walking, dancing, attacking, jumping, staying }
+
+final playerProvider = StateNotifierProvider<PlayerNotifier, PlayerState>((ref) {
   return PlayerNotifier(ref);
 });
 
@@ -11,65 +11,30 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   PlayerNotifier(this.ref) : super(PlayerState());
   final StateNotifierProviderRef ref;
 
-  getHurt(int damage) {
+  void getHurt(int damage) {
     int life = state.life;
+    int endurance = state.endurance;
 
-    if (state.endurance == 0){
+    if (endurance == 0) {
       life -= damage;
-    }else{
-      life -= (damage / Random().nextInt(state.endurance)).round();
+    } else {
+      life -= (damage / Random().nextInt(endurance + 1)).round(); // Avoid division by zero
     }
 
-    state = state.copyWith(
-      life: life,
-    );
+    state = state.copyWith(life: life);
   }
-  walk(bool walk){
+
+  void setAction(PlayerAction action) {
     state = state.copyWith(
-      isWalking: walk,
-      isAttacking: !walk,
-      isDancing: !walk,
-      isJumping: !walk,
-      isStaying: !walk,
-    );
-  }
-  dance(bool dance){
-    state = state.copyWith(
-      isDancing: dance,
-      isAttacking: !dance,
-      isJumping: !dance,
-      isStaying: !dance,
-      isWalking: !dance,
-    );
-  }
-  attack(bool attack){
-    state = state.copyWith(
-      isAttacking: attack,
-      isDancing: !attack,
-      isJumping: !attack,
-      isStaying: !attack,
-      isWalking: !attack,
-    );
-  }
-  jump(bool jump){
-    state = state.copyWith(
-      isJumping: jump,
-      isAttacking: !jump,
-      isDancing: !jump,
-      isStaying: !jump,
-      isWalking: !jump,
-    );
-  }
-  stay(bool stay){
-    state = state.copyWith(
-      isStaying: stay,
-      isJumping: !stay,
-      isAttacking: !stay,
-      isDancing: !stay,
-      isWalking: !stay,
+      isWalking: action == PlayerAction.walking,
+      isDancing: action == PlayerAction.dancing,
+      isAttacking: action == PlayerAction.attacking,
+      isJumping: action == PlayerAction.jumping,
+      isStaying: action == PlayerAction.staying,
     );
   }
 }
+
 
 class PlayerState {
   final int life;
@@ -81,6 +46,7 @@ class PlayerState {
   final bool isAttacking;
   final bool isJumping;
   final bool isStaying;
+
   PlayerState({
     this.life = 10,
     this.damage = 1,

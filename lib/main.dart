@@ -1,33 +1,25 @@
+import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:shadow_game/features/shared/services/services.dart';
-import 'configs/configs.dart';
+import 'package:shadow_game/configs/configs.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Flame.device.fullScreen();
+  await Flame.device.setLandscape();
   runApp(
-    const ProviderScope(
-      child: MainApp(),
-    ),
+    const MyGameApp(),
   );
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyGameApp extends StatelessWidget {
+  const MyGameApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      supportedLocales: const [Locale('es')],
-      routerConfig: appRouter,
       theme: AppTheme().getTheme(),
-      builder: (context, child) {
-        return Services(
-          child: child!,
-        );
-      },
+      routerConfig: appRouter,
     );
   }
 }
