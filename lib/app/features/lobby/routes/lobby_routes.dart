@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:shadow_game_v2/app/features/lobby/screens/game_over_screen.dart';
-import 'package:shadow_game_v2/app/features/lobby/screens/start_game_screen.dart';
-import 'package:shadow_game_v2/app/features/lobby/screens/tutorial_screen.dart';
+import 'package:shadow_game/app/features/lobby/screens/game_over_screen.dart';
+import 'package:shadow_game/app/features/lobby/screens/start_game_screen.dart';
+import 'package:shadow_game/app/features/lobby/screens/tutorial_screen.dart';
 
 class LobbyRoutes {
   static GoRoute startGame = GoRoute(

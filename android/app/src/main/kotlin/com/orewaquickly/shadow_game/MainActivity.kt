@@ -1,4 +1,4 @@
-package com.example.shadow_game_v2
+package com.orewaquickly.shadow_game
 
 import io.flutter.embedding.android.FlutterActivity
 

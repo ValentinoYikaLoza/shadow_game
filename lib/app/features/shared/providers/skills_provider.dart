@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/player_provider.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/snackbar.dart'; // Importing player provider to access coins
+import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
+import 'package:shadow_game/app/features/shared/widgets/snackbar.dart'; // Importing player provider to access coins
 
 final skillProvider = StateNotifierProvider<SkillNotifier, SkillState>((ref) {
   return SkillNotifier(ref);

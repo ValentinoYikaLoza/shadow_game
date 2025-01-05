@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/background_provider.dart';
-// import 'package:shadow_game_v2/app/features/level_one/providers/player_provider.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/player_provider.dart';
-import 'package:shadow_game_v2/app/features/level_one/widgets/gestures.dart';
-import 'package:shadow_game_v2/app/features/level_one/widgets/interface_buttons.dart';
-import 'package:shadow_game_v2/app/features/level_one/widgets/objects.dart';
-import 'package:shadow_game_v2/app/features/level_one/widgets/parallax_background.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/skills_dialog.dart';
-import 'package:shadow_game_v2/app/features/level_one/widgets/characters.dart'
+import 'package:shadow_game/app/features/level_one/providers/background_provider.dart';
+// import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
+import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
+import 'package:shadow_game/app/features/level_one/widgets/gestures.dart';
+import 'package:shadow_game/app/features/level_one/widgets/interface_buttons.dart';
+import 'package:shadow_game/app/features/level_one/widgets/objects.dart';
+import 'package:shadow_game/app/features/level_one/widgets/parallax_background.dart';
+import 'package:shadow_game/app/features/shared/widgets/skills_dialog.dart';
+import 'package:shadow_game/app/features/level_one/widgets/characters.dart'
     as characters;
 
 class LevelOneScreen extends ConsumerStatefulWidget {

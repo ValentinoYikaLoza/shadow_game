@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:shadow_game_v2/app/config/constants/app_colors.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/custom_gif.dart';
+import 'package:shadow_game/app/config/constants/app_colors.dart';
+import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
 
 enum SnackbarType {
   normal,

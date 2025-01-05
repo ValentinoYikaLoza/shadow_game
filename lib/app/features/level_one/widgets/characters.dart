@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game_v2/app/features/level_one/models/data.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/dog_provider.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/player_provider.dart';
-// import 'package:shadow_game_v2/app/features/level_one/providers/shadow_provider.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/spider_provider.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/custom_gif.dart';
-import 'package:shadow_game_v2/app/features/level_one/widgets/spider_widget.dart';
+import 'package:shadow_game/app/features/level_one/models/data.dart';
+import 'package:shadow_game/app/features/level_one/providers/dog_provider.dart';
+import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
+// import 'package:shadow_game/app/features/level_one/providers/shadow_provider.dart';
+import 'package:shadow_game/app/features/level_one/providers/spider_provider.dart';
+import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
+import 'package:shadow_game/app/features/level_one/widgets/spider_widget.dart';
 
 class Characters extends ConsumerStatefulWidget {
   final Widget child;

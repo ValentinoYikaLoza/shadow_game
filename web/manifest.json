@@ -1,6 +1,6 @@
 {
-    "name": "shadow_game_v2",
-    "short_name": "shadow_game_v2",
+    "name": "shadow_game",
+    "short_name": "shadow_game",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/custom_gif.dart';
+import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
 
 class CustomButton extends StatefulWidget {
   final String imagePath;

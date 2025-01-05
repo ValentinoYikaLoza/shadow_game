@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game_v2/app/features/level_one/models/data.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/background_provider.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/chest_provider.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/dog_provider.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/door_provider.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/player_provider.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/snackbar.dart';
+import 'package:shadow_game/app/features/level_one/models/data.dart';
+import 'package:shadow_game/app/features/level_one/providers/background_provider.dart';
+import 'package:shadow_game/app/features/level_one/providers/chest_provider.dart';
+import 'package:shadow_game/app/features/level_one/providers/dog_provider.dart';
+import 'package:shadow_game/app/features/level_one/providers/door_provider.dart';
+import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
+import 'package:shadow_game/app/features/shared/widgets/snackbar.dart';
 
 class SpiderState {
   final List<Spider> spiders;

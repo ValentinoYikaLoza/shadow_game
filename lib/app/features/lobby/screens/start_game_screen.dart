@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shadow_game_v2/app/config/constants/app_colors.dart';
-import 'package:shadow_game_v2/app/config/router/app_router.dart';
-import 'package:shadow_game_v2/app/features/level_one/routes/level_one_routes.dart';
-import 'package:shadow_game_v2/app/features/lobby/routes/lobby_routes.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/custom_button.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/custom_gif.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/loader.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/snackbar.dart';
+import 'package:shadow_game/app/config/constants/app_colors.dart';
+import 'package:shadow_game/app/config/router/app_router.dart';
+import 'package:shadow_game/app/features/level_one/routes/level_one_routes.dart';
+import 'package:shadow_game/app/features/lobby/routes/lobby_routes.dart';
+import 'package:shadow_game/app/features/shared/widgets/custom_button.dart';
+import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
+import 'package:shadow_game/app/features/shared/widgets/loader.dart';
+import 'package:shadow_game/app/features/shared/widgets/snackbar.dart';
 
 class StartGameScreen extends StatelessWidget {
   const StartGameScreen({super.key});

@@ -1,5 +1,5 @@
-// import 'package:shadow_game_v2/app/features/level_one/models/data.dart';
-// import 'package:shadow_game_v2/app/features/level_one/models/game_object.dart';
+// import 'package:shadow_game/app/features/level_one/models/data.dart';
+// import 'package:shadow_game/app/features/level_one/models/game_object.dart';
 
 // class Enemy extends GameObject {
 //   final double currentLives;

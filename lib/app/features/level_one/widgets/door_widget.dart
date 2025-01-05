@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/door_provider.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/custom_gif.dart';
+import 'package:shadow_game/app/features/level_one/providers/door_provider.dart';
+import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
 
 class DoorWidget extends StatelessWidget {
   final Door door;

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/background_provider.dart';
-import 'package:shadow_game_v2/app/features/level_one/providers/player_provider.dart';
+import 'package:shadow_game/app/features/level_one/providers/background_provider.dart';
+import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
 
 abstract class GameObject {
   final double xCoords;

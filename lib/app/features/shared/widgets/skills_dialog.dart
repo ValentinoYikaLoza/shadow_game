@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game_v2/app/features/shared/widgets/custom_button.dart';
-import 'package:shadow_game_v2/app/features/shared/providers/skills_provider.dart';
+import 'package:shadow_game/app/features/shared/widgets/custom_button.dart';
+import 'package:shadow_game/app/features/shared/providers/skills_provider.dart';
 
 final GlobalKey<_SkillDialogContentState> _skillDialogKey =
     GlobalKey<_SkillDialogContentState>();
