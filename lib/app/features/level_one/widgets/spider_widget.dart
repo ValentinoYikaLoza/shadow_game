@@ -50,8 +50,8 @@ class SpiderWidgetState extends ConsumerState<SpiderWidget> {
   @override
   void didUpdateWidget(covariant SpiderWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.spider.currentState == SpiderAnimation.die &&
-        oldWidget.spider.currentState != SpiderAnimation.die) {
+    if (widget.spider.currentAnimation == SpiderAnimation.die &&
+        oldWidget.spider.currentAnimation != SpiderAnimation.die) {
       initOpacity();
     }
   }
@@ -69,32 +69,32 @@ class SpiderWidgetState extends ConsumerState<SpiderWidget> {
     final groundHeight = screenHeight * 0.3;
     return Positioned(
       bottom: widget.isBoss
-          ? widget.spider.currentState == SpiderAnimation.die
+          ? widget.spider.currentAnimation == SpiderAnimation.die
               ? groundHeight - 20
               : groundHeight - 5
           : groundHeight - 2,
       left: widget.spider.xCoords,
       child: GestureDetector(
         onLongPressDown: (_) {
-          widget.spider.currentState == SpiderAnimation.attack
+          widget.spider.currentAnimation == SpiderAnimation.attack
               ? ref.read(playerProvider.notifier).attack()
               : null;
         },
         onLongPressEnd: (_) {
-          ref.read(playerProvider.notifier).updateState(PlayerAnimation.stay);
+          ref.read(playerProvider.notifier).updateAnimation(PlayerAnimation.stay);
         },
         onTapUp: (_) {
-          ref.read(playerProvider.notifier).updateState(PlayerAnimation.stay);
+          ref.read(playerProvider.notifier).updateAnimation(PlayerAnimation.stay);
         },
         child: Opacity(
           opacity: opacity,
           child: CustomGif(
-            images: widget.spider.currentState.images,
+            images: widget.spider.currentAnimation.images,
             width: widget.isBoss ? 475 : 95,
-            loop: widget.spider.currentState.loop,
+            loop: widget.spider.currentAnimation.loop,
             flip: widget.spider.currentDirection != Directions.left,
             onComplete: () {
-              if (widget.spider.currentState == SpiderAnimation.attack) {
+              if (widget.spider.currentAnimation == SpiderAnimation.attack) {
                 ref
                     .read(playerProvider.notifier)
                     .takeDamage(widget.spider.damage);

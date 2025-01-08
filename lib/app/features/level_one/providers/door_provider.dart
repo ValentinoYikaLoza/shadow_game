@@ -7,12 +7,12 @@ import 'package:shadow_game/app/features/level_one/providers/player_provider.dar
 enum DoorType { start, finish }
 
 class Door extends GameObject {
-  final DoorSprite currentState;
+  final DoorSprite currentSprite;
   final DoorType doorType;
 
   Door({
     super.xCoords = 100,
-    this.currentState = DoorSprite.close,
+    this.currentSprite = DoorSprite.close,
     this.doorType = DoorType.start,
     super.width = 120,
   });
@@ -20,13 +20,13 @@ class Door extends GameObject {
   @override
   Door copyWith({
     double? xCoords,
-    DoorSprite? currentState,
+    DoorSprite? currentSprite,
     DoorType? doorType,
     double? width,
   }) {
     return Door(
       xCoords: xCoords ?? this.xCoords,
-      currentState: currentState ?? this.currentState,
+      currentSprite: currentSprite ?? this.currentSprite,
       doorType: doorType ?? this.doorType,
       width: width ?? this.width,
     );
@@ -108,7 +108,7 @@ class DoorNotifier extends GameObjectNotifier<Door> {
       objects: state.objects.map(
         (door) {
           return door.copyWith(
-            currentState: isPlayerColliding(playerX, door)
+            currentSprite: isPlayerColliding(playerX, door)
                 ? DoorSprite.open
                 : DoorSprite.close,
           );

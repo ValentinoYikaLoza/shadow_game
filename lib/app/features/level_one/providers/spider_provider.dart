@@ -12,12 +12,12 @@ import 'package:shadow_game/app/features/level_one/providers/player_provider.dar
 import 'package:shadow_game/app/features/shared/widgets/snackbar.dart';
 
 class Spider extends Enemy {
-  final SpiderAnimation currentState;
+  final SpiderAnimation currentAnimation;
   final Directions currentDirection;
 
   Spider({
     super.xCoords = 500,
-    this.currentState = SpiderAnimation.stay,
+    this.currentAnimation = SpiderAnimation.stay,
     this.currentDirection = Directions.left,
     super.width = 300,
     super.currentLives = 5,
@@ -27,7 +27,7 @@ class Spider extends Enemy {
   @override
   Spider copyWith({
     double? xCoords,
-    SpiderAnimation? currentState,
+    SpiderAnimation? currentAnimation,
     Directions? currentDirection,
     double? width,
     double? currentLives,
@@ -36,7 +36,7 @@ class Spider extends Enemy {
   }) {
     return Spider(
       xCoords: xCoords ?? this.xCoords,
-      currentState: currentState ?? this.currentState,
+      currentAnimation: currentAnimation ?? this.currentAnimation,
       currentDirection: currentDirection ?? this.currentDirection,
       width: width ?? this.width,
       currentLives: currentLives ?? this.currentLives,
@@ -135,7 +135,7 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
       final playerState = ref.read(playerProvider);
       state = state.copyWith(
         enemies: state.enemies.map((spider) {
-          if (spider.currentState == SpiderAnimation.walk) {
+          if (spider.currentAnimation == SpiderAnimation.walk) {
             return _moveSpiderTowardsPlayer(spider, playerState.xCoords);
           }
           return spider;
@@ -148,8 +148,8 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
     final isPlayerNear = spider.xCoords < playerX + 50;
 
     return spider.copyWith(
-      currentState:
-          isPlayerNear ? SpiderAnimation.attack : spider.currentState,
+      currentAnimation:
+          isPlayerNear ? SpiderAnimation.attack : spider.currentAnimation,
       xCoords: isPlayerNear ? spider.xCoords : spider.xCoords - 5,
     );
   }
@@ -162,7 +162,7 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
           if (!isPlayerColliding(playerX, spider)) return spider;
 
           return spider.copyWith(
-            currentState: spider.currentState == SpiderAnimation.die
+            currentAnimation: spider.currentAnimation == SpiderAnimation.die
                 ? SpiderAnimation.die
                 : SpiderAnimation.walk,
             currentDirection: Directions.left,
@@ -177,7 +177,7 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
     final backgroundPosition = ref.read(backgroundProvider).xCoords;
     state = state.copyWith(
       enemies: state.enemies.map((spider) {
-        if (spider.currentState != SpiderAnimation.attack) return spider;
+        if (spider.currentAnimation != SpiderAnimation.attack) return spider;
 
         final newHealth = spider.currentLives - damage;
         final spiderIndex = state.enemies.indexOf(spider);
@@ -188,7 +188,7 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
 
         return spider.copyWith(
           currentLives: newHealth,
-          currentState:
+          currentAnimation:
               newHealth <= 0 ? SpiderAnimation.die : SpiderAnimation.attack,
         );
       }).toList(),

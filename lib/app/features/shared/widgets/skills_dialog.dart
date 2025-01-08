@@ -1,49 +1,28 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/shared/widgets/custom_button.dart';
 import 'package:shadow_game/app/features/shared/providers/skills_provider.dart';
+import 'package:shadow_game/app/features/shared/widgets/custom_button.dart';
 
-final GlobalKey<_SkillDialogContentState> _skillDialogKey =
-    GlobalKey<_SkillDialogContentState>();
+final GlobalKey<_SkillDialogContentState> _skillDialogKey = GlobalKey<_SkillDialogContentState>();
 
 class SkillDialog {
-  static show() {
-    if (_skillDialogKey.currentState != null) {
-      _skillDialogKey.currentState!.show();
-    }
-  }
-
-  static dissmiss() {
-    if (_skillDialogKey.currentState != null) {
-      _skillDialogKey.currentState!.dismiss();
-    }
-  }
+  static void show() => _skillDialogKey.currentState?.show();
+  static void dismiss() => _skillDialogKey.currentState?.dismiss();
 }
 
 class SkillProvider extends StatelessWidget {
-  const SkillProvider({
-    super.key,
-    this.child,
-  });
+  const SkillProvider({super.key, this.child});
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    return _SkillDialogContent(
-      key: _skillDialogKey,
-      child: child,
-    );
+    return _SkillDialogContent(key: _skillDialogKey, child: child);
   }
 }
 
 class _SkillDialogContent extends ConsumerStatefulWidget {
-  const _SkillDialogContent({
-    super.key,
-    this.child,
-  });
-
+  const _SkillDialogContent({super.key, this.child});
   final Widget? child;
 
   @override
@@ -51,19 +30,10 @@ class _SkillDialogContent extends ConsumerStatefulWidget {
 }
 
 class _SkillDialogContentState extends ConsumerState<_SkillDialogContent> {
-  bool showDialog = false;
+  bool _isDialogVisible = false;
 
-  show() {
-    setState(() {
-      showDialog = true;
-    });
-  }
-
-  dismiss() {
-    setState(() {
-      showDialog = false;
-    });
-  }
+  void show() => setState(() => _isDialogVisible = true);
+  void dismiss() => setState(() => _isDialogVisible = false);
 
   @override
   Widget build(BuildContext context) {
@@ -71,84 +41,75 @@ class _SkillDialogContentState extends ConsumerState<_SkillDialogContent> {
     return Stack(
       children: [
         if (widget.child != null) widget.child!,
-        if (showDialog)
-          Stack(
-            children: [
-              // Capa de blur
-              Positioned.fill(
-                child: GestureDetector(
-                  onTap: dismiss,
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                    child: Container(
-                      color: Colors.black.withOpacity(0.3),
-                    ),
-                  ),
-                ),
-              ),
-              // Contenido del diálogo
-              Center(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Image.asset('assets/images/shared/skillBackground.png'),
-                    Positioned(
-                      top: 20,
-                      left: 20,
-                      child: Row(
-                        children: [
-                          CustomButton(
-                            imagePath: skillState.currentDamageImage.image,
-                            width: 100,
-                            onPressed: () {
-                              setState(() {
-                                ref
-                                    .read(skillProvider.notifier)
-                                    .levelUPDamage();
-                              });
-                            },
-                          ),
-                          const SizedBox(width: 10),
-                          CustomButton(
-                            imagePath: skillState.currentEnduranceImage.image,
-                            width: 100,
-                            onPressed: () {
-                              setState(() {
-                                ref
-                                    .read(skillProvider.notifier)
-                                    .levelUPEndurance();
-                              });
-                            },
-                          ),
-                          const SizedBox(width: 10),
-                          CustomButton(
-                            imagePath: skillState.currentLifeImage.image,
-                            width: 100,
-                            onPressed: () {
-                              setState(() {
-                                ref.read(skillProvider.notifier).levelUPLife();
-                              });
-                            },
-                          ),
-                          const SizedBox(width: 10),
-                          CustomButton(
-                            imagePath: skillState.currentSpeedImage.image,
-                            width: 100,
-                            onPressed: () {
-                              setState(() {
-                                ref.read(skillProvider.notifier).levelUPSpeed();
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        if (_isDialogVisible) _buildDialog(skillState),
       ],
     );
+  }
+
+  Widget _buildDialog(SkillState skillState) {
+    return Stack(
+      children: [
+        _buildBlurLayer(),
+        _buildDialogContent(skillState),
+      ],
+    );
+  }
+
+  Widget _buildBlurLayer() {
+    return Positioned.fill(
+      child: GestureDetector(
+        onTap: dismiss,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(color: Colors.black.withOpacity(0.3)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDialogContent(SkillState skillState) {
+    return Center(
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Image.asset('assets/images/shared/skillBackground.png'),
+          Positioned(
+            top: 20,
+            left: 20,
+            child: Row(
+              children: SkillType.values.map((skillType) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: CustomButton(
+                    imagePath: _getSkillImage(skillState, skillType),
+                    width: 100,
+                    onPressed: () => _levelUpSkill(skillType),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _getSkillImage(SkillState skillState, SkillType skillType) {
+    switch (skillType) {
+      case SkillType.damage:
+        return skillState.currentDamageImage.image;
+      case SkillType.endurance:
+        return skillState.currentEnduranceImage.image;
+      case SkillType.life:
+        return skillState.currentLifeImage.image;
+      case SkillType.speed:
+        return skillState.currentSpeedImage.image;
+    }
+  }
+
+  void _levelUpSkill(SkillType skillType) {
+    setState(() {
+      ref.read(skillProvider.notifier).levelUpSkill(skillType);
+    });
   }
 }

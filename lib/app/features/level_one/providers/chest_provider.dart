@@ -7,13 +7,13 @@ import 'package:shadow_game/app/features/level_one/providers/player_provider.dar
 
 
 class Chest extends GameObject {
-  final ChestSprite currentState;
+  final ChestSprite currentSprite;
   final bool hasCoin;
   final double coinValue;
 
   Chest({
     super.xCoords = 600,
-    this.currentState = ChestSprite.close,
+    this.currentSprite = ChestSprite.close,
     this.hasCoin = false,
     this.coinValue = 1,
     super.width = 60,
@@ -22,14 +22,14 @@ class Chest extends GameObject {
   @override
   Chest copyWith({
     double? xCoords,
-    ChestSprite? currentState,
+    ChestSprite? currentSprite,
     bool? hasCoin,
     double? coinValue,
     double? width,
   }) {
     return Chest(
       xCoords: xCoords ?? this.xCoords,
-      currentState: currentState ?? this.currentState,
+      currentSprite: currentSprite ?? this.currentSprite,
       hasCoin: hasCoin ?? this.hasCoin,
       coinValue: coinValue ?? this.coinValue,
       width: width ?? this.width,
@@ -109,12 +109,12 @@ class ChestNotifier extends GameObjectNotifier<Chest> {
       objects: state.objects.map((chest) {
         if (!isPlayerColliding(playerX, chest)) return chest;
 
-        if (chest.currentState == ChestSprite.open && !chest.hasCoin) {
+        if (chest.currentSprite == ChestSprite.open && !chest.hasCoin) {
           _dropCoin(chest);
           return chest.copyWith(hasCoin: true);
         }
 
-        return chest.copyWith(currentState: ChestSprite.open);
+        return chest.copyWith(currentSprite: ChestSprite.open);
       }).toList(),
     );
   }

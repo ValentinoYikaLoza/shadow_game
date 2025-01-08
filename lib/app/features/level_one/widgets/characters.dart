@@ -55,23 +55,23 @@ class CharactersState extends ConsumerState<Characters> {
           child: GestureDetector(
             onLongPressDown: (_) {
               setState(() {
-                ref.read(dogProvider.notifier).updateState(ShadowAnimation.bark);
+                ref.read(dogProvider.notifier).updateAnimation(ShadowAnimation.bark);
               });
             },
             onLongPressEnd: (_) {
               setState(() {
-                ref.read(dogProvider.notifier).updateState(ShadowAnimation.sit);
+                ref.read(dogProvider.notifier).updateAnimation(ShadowAnimation.sit);
               });
             },
             onTapUp: (_) {
               setState(() {
-                ref.read(dogProvider.notifier).updateState(ShadowAnimation.sit);
+                ref.read(dogProvider.notifier).updateAnimation(ShadowAnimation.sit);
               });
             },
             child: CustomGif(
-              images: dogState.currentState.images,
+              images: dogState.currentAnimation.images,
               width: 80,
-              loop: dogState.currentState.loop,
+              loop: dogState.currentAnimation.loop,
               flip: dogState.currentDirection == Directions.left,
             ),
           ),
@@ -85,9 +85,9 @@ class CharactersState extends ConsumerState<Characters> {
               setState(() {});
             },
             child: CustomGif(
-              images: playerState.currentState.images,
+              images: playerState.currentAnimation.images,
               width: 50,
-              loop: playerState.currentState.loop,
+              loop: playerState.currentAnimation.loop,
               flip: playerState.currentDirection == Directions.left,
             ),
           ),

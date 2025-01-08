@@ -1,149 +1,34 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
-import 'package:shadow_game/app/features/shared/widgets/snackbar.dart'; // Importing player provider to access coins
+import 'package:shadow_game/app/features/shared/widgets/snackbar.dart';
 
-final skillProvider = StateNotifierProvider<SkillNotifier, SkillState>((ref) {
-  return SkillNotifier(ref);
-});
+enum SkillType { damage, endurance, life, speed }
 
-class SkillNotifier extends StateNotifier<SkillState> {
-  SkillNotifier(this.ref) : super(SkillState());
-  final Ref ref;
+enum SkillLevels {
+  // Damage Skills
+  damageLevel1(SkillType.damage, 1, 'assets/images/shared/damage/damage_level1.png'),
+  damageLevel2(SkillType.damage, 2, 'assets/images/shared/damage/damage_level2.png'),
+  damageLevel3(SkillType.damage, 3, 'assets/images/shared/damage/damage_level3.png'),
 
-  void levelUPDamage() {
-    final playerState = ref.read(playerProvider);
+  // Endurance Skills
+  enduranceLevel1(SkillType.endurance, 1, 'assets/images/shared/endurance/endurance_level1.png'),
+  enduranceLevel2(SkillType.endurance, 2, 'assets/images/shared/endurance/endurance_level2.png'),
+  enduranceLevel3(SkillType.endurance, 3, 'assets/images/shared/endurance/endurance_level3.png'),
 
-    // Check coin requirements for each level
-    if (state.currentLevelDamage == 1 && playerState.coins >= 1) {
-      _updateDamageLevel(2, 1);
-      ref.read(playerProvider.notifier).updateDamage(2);
-    } else if (state.currentLevelDamage == 2 && playerState.coins >= 5) {
-      _updateDamageLevel(3, 5);
-      ref.read(playerProvider.notifier).updateDamage(2);
-    } else {
-      SnackbarService.show('No hay suficientes monedas');
-      return;
-    }
-  }
+  // Life Skills
+  lifeLevel1(SkillType.life, 1, 'assets/images/shared/life/life_level1.png'),
+  lifeLevel2(SkillType.life, 2, 'assets/images/shared/life/life_level2.png'),
+  lifeLevel3(SkillType.life, 3, 'assets/images/shared/life/life_level3.png'),
 
-  void levelUPEndurance() {
-    final playerState = ref.read(playerProvider);
+  // Speed Skills
+  speedLevel1(SkillType.speed, 1, 'assets/images/shared/speed/speed_level1.png'),
+  speedLevel2(SkillType.speed, 2, 'assets/images/shared/speed/speed_level2.png'),
+  speedLevel3(SkillType.speed, 3, 'assets/images/shared/speed/speed_level3.png');
 
-    // Check coin requirements for each level
-    if (state.currentLevelEndurance == 1 && playerState.coins >= 1) {
-      _updateEnduranceLevel(2, 1);
-      ref.read(playerProvider.notifier).updateDamageResistance(0.3);
-    } else if (state.currentLevelEndurance == 2 && playerState.coins >= 5) {
-      _updateEnduranceLevel(3, 5);
-      ref.read(playerProvider.notifier).updateDamageResistance(0.5);
-    } else {
-      SnackbarService.show('No hay suficientes monedas');
-      return;
-    }
-  }
-
-  void levelUPLife() {
-    final playerState = ref.read(playerProvider);
-
-    // Check coin requirements for each level
-    if (state.currentLevelLife == 1 && playerState.coins >= 1) {
-      _updateLifeLevel(2, 1);
-      ref.read(playerProvider.notifier).updateMaxLives(11);
-    } else if (state.currentLevelLife == 2 && playerState.coins >= 5) {
-      _updateLifeLevel(3, 5);
-      ref.read(playerProvider.notifier).updateMaxLives(12);
-    } else {
-      SnackbarService.show('No hay suficientes monedas');
-      return;
-    }
-  }
-
-  void levelUPSpeed() {
-    final playerState = ref.read(playerProvider);
-
-    // Check coin requirements for each level
-    if (state.currentLevelSpeed == 1 && playerState.coins >= 1) {
-      _updateSpeedLevel(2, 1);
-      ref.read(playerProvider.notifier).updateSpeed(0.5);
-    } else if (state.currentLevelSpeed == 2 && playerState.coins >= 5) {
-      _updateSpeedLevel(3, 5);
-      ref.read(playerProvider.notifier).updateSpeed(0.8);
-    } else {
-      SnackbarService.show('No hay suficientes monedas');
-      return;
-    }
-  }
-
-  void _updateDamageLevel(double newLevel, double coinCost) {
-    final playerNotifier = ref.read(playerProvider.notifier);
-    playerNotifier.addCoins(-coinCost); // Deduct coins
-
-    state = state.copyWith(
-      currentLevelDamage: newLevel,
-      currentDamageImage: _getSkillGif('damage', newLevel),
-    );
-  }
-
-  void _updateEnduranceLevel(double newLevel, double coinCost) {
-    final playerNotifier = ref.read(playerProvider.notifier);
-    playerNotifier.addCoins(-coinCost); // Deduct coins
-
-    state = state.copyWith(
-      currentLevelEndurance: newLevel,
-      currentEnduranceImage: _getSkillGif('endurance', newLevel),
-    );
-  }
-
-  void _updateLifeLevel(double newLevel, double coinCost) {
-    final playerNotifier = ref.read(playerProvider.notifier);
-    playerNotifier.addCoins(-coinCost); // Deduct coins
-
-    state = state.copyWith(
-      currentLevelLife: newLevel,
-      currentLifeImage: _getSkillGif('life', newLevel),
-    );
-  }
-
-  void _updateSpeedLevel(double newLevel, double coinCost) {
-    final playerNotifier = ref.read(playerProvider.notifier);
-    playerNotifier.addCoins(-coinCost); // Deduct coins
-
-    state = state.copyWith(
-      currentLevelSpeed: newLevel,
-      currentSpeedImage: _getSkillGif('speed', newLevel),
-    );
-  }
-
-  SkillLevels _getSkillGif(String skillType, double level) {
-    switch (skillType) {
-      case 'damage':
-        return level == 1
-            ? SkillLevels.damageLevel1
-            : level == 2
-                ? SkillLevels.damageLevel2
-                : SkillLevels.damageLevel3;
-      case 'endurance':
-        return level == 1
-            ? SkillLevels.enduranceLevel1
-            : level == 2
-                ? SkillLevels.enduranceLevel2
-                : SkillLevels.enduranceLevel3;
-      case 'life':
-        return level == 1
-            ? SkillLevels.lifeLevel1
-            : level == 2
-                ? SkillLevels.lifeLevel2
-                : SkillLevels.lifeLevel3;
-      case 'speed':
-        return level == 1
-            ? SkillLevels.speedLevel1
-            : level == 2
-                ? SkillLevels.speedLevel2
-                : SkillLevels.speedLevel3;
-      default:
-        return SkillLevels.damageLevel1;
-    }
-  }
+  final SkillType skillType;
+  final double level;
+  final String image;
+  const SkillLevels(this.skillType, this.level, this.image);
 }
 
 class SkillState {
@@ -179,40 +64,93 @@ class SkillState {
   }) {
     return SkillState(
       currentDamageImage: currentDamageImage ?? this.currentDamageImage,
-      currentEnduranceImage:
-          currentEnduranceImage ?? this.currentEnduranceImage,
+      currentEnduranceImage: currentEnduranceImage ?? this.currentEnduranceImage,
       currentLifeImage: currentLifeImage ?? this.currentLifeImage,
       currentSpeedImage: currentSpeedImage ?? this.currentSpeedImage,
       currentLevelDamage: currentLevelDamage ?? this.currentLevelDamage,
-      currentLevelEndurance:
-          currentLevelEndurance ?? this.currentLevelEndurance,
+      currentLevelEndurance: currentLevelEndurance ?? this.currentLevelEndurance,
       currentLevelLife: currentLevelLife ?? this.currentLevelLife,
       currentLevelSpeed: currentLevelSpeed ?? this.currentLevelSpeed,
     );
   }
 }
 
-enum SkillLevels {
-  // Damage Skills
-  damageLevel1('assets/images/shared/damage/damage_level1.png'),
-  damageLevel2('assets/images/shared/damage/damage_level2.png'),
-  damageLevel3('assets/images/shared/damage/damage_level3.png'),
+class SkillNotifier extends StateNotifier<SkillState> {
+  SkillNotifier(this.ref) : super(SkillState());
+  final Ref ref;
 
-  // Endurance Skills
-  enduranceLevel1('assets/images/shared/endurance/endurance_level1.png'),
-  enduranceLevel2('assets/images/shared/endurance/endurance_level2.png'),
-  enduranceLevel3('assets/images/shared/endurance/endurance_level3.png'),
+  void levelUpSkill(SkillType skillType) {
+    final playerState = ref.read(playerProvider);
+    final currentLevel = _getCurrentLevel(skillType);
+    final coinCost = _getCoinCost(currentLevel);
 
-  // Life Skills
-  lifeLevel1('assets/images/shared/life/life_level1.png'),
-  lifeLevel2('assets/images/shared/life/life_level2.png'),
-  lifeLevel3('assets/images/shared/life/life_level3.png'),
+    if (playerState.coins >= coinCost) {
+      _updateSkillLevel(skillType, currentLevel + 1, coinCost);
+    } else {
+      SnackbarService.show('No hay suficientes monedas');
+    }
+  }
 
-  // Speed Skills
-  speedLevel1('assets/images/shared/speed/speed_level1.png'),
-  speedLevel2('assets/images/shared/speed/speed_level2.png'),
-  speedLevel3('assets/images/shared/speed/speed_level3.png');
+  double _getCurrentLevel(SkillType skillType) {
+    switch (skillType) {
+      case SkillType.damage:
+        return state.currentLevelDamage;
+      case SkillType.endurance:
+        return state.currentLevelEndurance;
+      case SkillType.life:
+        return state.currentLevelLife;
+      case SkillType.speed:
+        return state.currentLevelSpeed;
+    }
+  }
 
-  final String image;
-  const SkillLevels(this.image);
+  double _getCoinCost(double currentLevel) {
+    return currentLevel == 1 ? 1 : 5;
+  }
+
+  void _updateSkillLevel(SkillType skillType, double newLevel, double coinCost) {
+    final playerNotifier = ref.read(playerProvider.notifier);
+    playerNotifier.addCoins(-coinCost);
+
+    switch (skillType) {
+      case SkillType.damage:
+        state = state.copyWith(
+          currentLevelDamage: newLevel,
+          currentDamageImage: _getSkillGif(skillType, newLevel),
+        );
+        playerNotifier.updateDamage(newLevel == 2 ? 2 : 2);
+        break;
+      case SkillType.endurance:
+        state = state.copyWith(
+          currentLevelEndurance: newLevel,
+          currentEnduranceImage: _getSkillGif(skillType, newLevel),
+        );
+        playerNotifier.updateDamageResistance(newLevel == 2 ? 0.3 : 0.5);
+        break;
+      case SkillType.life:
+        state = state.copyWith(
+          currentLevelLife: newLevel,
+          currentLifeImage: _getSkillGif(skillType, newLevel),
+        );
+        playerNotifier.updateMaxLives(newLevel == 2 ? 11 : 12);
+        break;
+      case SkillType.speed:
+        state = state.copyWith(
+          currentLevelSpeed: newLevel,
+          currentSpeedImage: _getSkillGif(skillType, newLevel),
+        );
+        playerNotifier.updateSpeed(newLevel == 2 ? 0.5 : 0.8);
+        break;
+    }
+  }
+
+  SkillLevels _getSkillGif(SkillType skillType, double level) {
+    return SkillLevels.values.firstWhere(
+      (skillLevel) => skillLevel.skillType == skillType && skillLevel.level == level,
+    );
+  }
 }
+
+final skillProvider = StateNotifierProvider<SkillNotifier, SkillState>((ref) {
+  return SkillNotifier(ref);
+});

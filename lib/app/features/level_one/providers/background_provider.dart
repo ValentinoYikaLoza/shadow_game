@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
 
 class BackgroundState {
@@ -12,7 +11,6 @@ class BackgroundState {
     this.backgroundPosition = 0,
     this.rightLimit = 10000,
   });
-
 
   BackgroundState copyWith({
     double? xCoords,
@@ -31,9 +29,8 @@ class BackgroundNotifier extends StateNotifier<BackgroundState> {
   BackgroundNotifier(this.ref) : super(BackgroundState());
   final Ref ref;
 
-  /// Restablece el estado de las arañas
   void resetData() {
-    state = BackgroundState(); // Restaura el estado inicial
+    state = BackgroundState();
   }
 
   void updateXCoords(double distance) {

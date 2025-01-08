@@ -23,7 +23,7 @@ class DoorWidget extends StatelessWidget {
               : Image.asset('assets/gifs/next_level.gif'),
           const SizedBox(height: 10),
           CustomGif(
-            images: door.currentState.images,
+            images: door.currentSprite.images,
             width: 120,
             loop: false,
           )
