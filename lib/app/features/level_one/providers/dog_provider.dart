@@ -120,7 +120,7 @@ class DogNotifier extends StateNotifier<DogState> {
     final distance = deltaX * state.speed;
 
     _goAwayTimer?.cancel();
-    _goAwayTimer = Timer.periodic(const Duration(milliseconds: 5), (timer) {
+    _goAwayTimer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
       if (playerX - state.xCoords <= 300) {
         _moveAway(distance);
       } else {
@@ -145,7 +145,7 @@ class DogNotifier extends StateNotifier<DogState> {
     final distance = deltaX * state.speed;
 
     _goBackTimer?.cancel();
-    _goBackTimer = Timer.periodic(const Duration(milliseconds: 5), (timer) {
+    _goBackTimer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
       if (!isPlayerColliding(playerX, state)) {
         _moveBack(distance);
       } else {

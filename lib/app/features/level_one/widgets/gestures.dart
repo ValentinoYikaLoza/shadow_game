@@ -33,7 +33,7 @@ class GesturesState extends ConsumerState<Gestures> {
               child: GestureDetector(
                 onLongPressStart: (_) {
                   _leftTimer =
-                      Timer.periodic(const Duration(milliseconds: 5), (_) {
+                      Timer.periodic(const Duration(milliseconds: 16), (_) {
                     playerNotifier.moveLeft();
                   });
                 },
@@ -53,7 +53,7 @@ class GesturesState extends ConsumerState<Gestures> {
               child: GestureDetector(
                 onLongPressStart: (_) {
                   _rightTimer =
-                      Timer.periodic(const Duration(milliseconds: 5), (_) {
+                      Timer.periodic(const Duration(milliseconds: 16), (_) {
                     playerNotifier.moveRight(
                         playerState.currentStatus == PlayerStatus.tutorial
                             ? screenWidth - 100

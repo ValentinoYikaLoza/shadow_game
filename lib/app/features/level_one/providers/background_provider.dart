@@ -4,22 +4,26 @@ import 'package:shadow_game/app/features/level_one/providers/player_provider.dar
 class BackgroundState {
   final double xCoords;
   final double backgroundPosition;
+  final double cavePosition;
   final double rightLimit;
 
   BackgroundState({
     this.xCoords = 20,
     this.backgroundPosition = 0,
+    this.cavePosition = 10000,
     this.rightLimit = 10000,
   });
 
   BackgroundState copyWith({
     double? xCoords,
     double? backgroundPosition,
+    double? cavePosition,
     double? rightLimit,
   }) {
     return BackgroundState(
       xCoords: xCoords ?? this.xCoords,
       backgroundPosition: backgroundPosition ?? this.backgroundPosition,
+      cavePosition: cavePosition ?? this.cavePosition,
       rightLimit: rightLimit ?? this.rightLimit,
     );
   }
@@ -41,7 +45,10 @@ class BackgroundNotifier extends StateNotifier<BackgroundState> {
     final newPosition = state.xCoords + distance;
 
     if (!canMove()) {
-      state = state.copyWith(backgroundPosition: state.backgroundPosition - distance);
+      state = state.copyWith(
+        backgroundPosition: state.backgroundPosition - distance,
+        cavePosition: state.cavePosition - distance,
+      );
     }
 
     state = state.copyWith(xCoords: newPosition);
@@ -59,7 +66,7 @@ class BackgroundNotifier extends StateNotifier<BackgroundState> {
   }
 
   bool canMoveRight(double distance) {
-    final newPosition = state.xCoords +  distance;
+    final newPosition = state.xCoords + distance;
 
     return newPosition < state.rightLimit;
   }
@@ -67,6 +74,7 @@ class BackgroundNotifier extends StateNotifier<BackgroundState> {
   setRightLimit(double rightLimit) {
     state = state.copyWith(
       rightLimit: rightLimit,
+      cavePosition: rightLimit
     );
   }
 }

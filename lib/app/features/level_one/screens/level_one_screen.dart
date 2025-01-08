@@ -7,6 +7,7 @@ import 'package:shadow_game/app/features/level_one/widgets/gestures.dart';
 import 'package:shadow_game/app/features/level_one/widgets/interface_buttons.dart';
 import 'package:shadow_game/app/features/level_one/widgets/objects.dart';
 import 'package:shadow_game/app/features/level_one/widgets/parallax_background.dart';
+import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
 import 'package:shadow_game/app/features/shared/widgets/skills_dialog.dart';
 import 'package:shadow_game/app/features/level_one/widgets/characters.dart'
     as characters;
@@ -52,9 +53,18 @@ class LevelOneScreenState extends ConsumerState<LevelOneScreen> {
                         height: MediaQuery.of(context).size.height * 0.8,
                       ),
                     ),
+                    Positioned(
+                      bottom: MediaQuery.of(context).size.height * 0.26,
+                      left: backgroundState.cavePosition,
+                      child: const CustomGif(
+                        images: ['assets/images/level_one/cave.png'],
+                        width: 718,
+                        loop: false,
+                      ),
+                    ),
                     // Ground background always at the bottom
                     Positioned(
-                      bottom: 0,
+                      bottom: -MediaQuery.of(context).size.height * 0.1,
                       left: 0,
                       right: 0,
                       child: ParallaxBackground(
@@ -62,7 +72,7 @@ class LevelOneScreenState extends ConsumerState<LevelOneScreen> {
                         positionLeft: backgroundState.backgroundPosition,
                         speed: playerState.speed,
                         height: MediaQuery.of(context).size.height *
-                            0.3, // Adjust height as needed
+                            0.4, // Adjust height as needed
                       ),
                     ),
                   ],
