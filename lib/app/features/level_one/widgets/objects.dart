@@ -22,7 +22,7 @@ class ObjectsState extends ConsumerState<Objects> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(doorProvider.notifier).addDoor();
+      ref.read(doorProvider.notifier).addObject();
     });
   }
 
@@ -38,9 +38,9 @@ class ObjectsState extends ConsumerState<Objects> {
         widget.child,
         //Puerta
         ...List.generate(
-          doorState.doors.length,
+          doorState.objects.length,
           (index) {
-            final door = doorState.doors[index];
+            final door = doorState.objects[index];
             return DoorWidget(
               door: door,
               groundHeight: groundHeight - 28,
@@ -49,14 +49,14 @@ class ObjectsState extends ConsumerState<Objects> {
         ),
         // Cofre
         ...List.generate(
-          chestState.chests.length,
+          chestState.objects.length,
           (index) {
-            final chest = chestState.chests[index];
+            final chest = chestState.objects[index];
             return ChestWidget(
               key: ValueKey('chest_$index'), // Add unique key
               chest: chest,
               groundHeight: groundHeight,
-              isBoss: index == spiderState.maxSpiders - 1,
+              isBoss: index == spiderState.maxEnemies - 1,
             );
           },
         ),

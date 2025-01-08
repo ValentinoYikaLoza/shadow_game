@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadow_game/app/config/router/app_router.dart';
+import 'package:shadow_game/app/features/level_one/models/animation.dart';
 
-import 'package:shadow_game/app/features/level_one/models/data.dart';
+// import 'package:shadow_game/app/features/level_one/models/data.dart';
 import 'package:shadow_game/app/features/level_one/providers/background_provider.dart';
 import 'package:shadow_game/app/features/level_one/providers/chest_provider.dart';
 import 'package:shadow_game/app/features/level_one/providers/coin_provider.dart';
@@ -24,7 +25,7 @@ class PlayerState {
   final double coins;
   final double speed;
   final PlayerStatus currentStatus;
-  final PlayerAnimations currentState;
+  final PlayerAnimation currentState;
   final Directions currentDirection;
   final bool isBetweenTheLimits;
   final bool isJumping;
@@ -33,7 +34,7 @@ class PlayerState {
     required this.maxLives,
     required this.currentLives,
     required this.currentStatus,
-    this.currentState = PlayerAnimations.stay,
+    this.currentState = PlayerAnimation.stay,
     this.currentDirection = Directions.right,
     this.xCoords = 20.0,
     this.yCoords = 0.0,
@@ -55,7 +56,7 @@ class PlayerState {
     double? coins,
     double? speed,
     PlayerStatus? currentStatus,
-    PlayerAnimations? currentState,
+    PlayerAnimation? currentState,
     Directions? currentDirection,
     bool? isBetweenTheLimits,
     bool? isJumping,
@@ -159,7 +160,7 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     state = state.copyWith(currentStatus: newStatus);
   }
 
-  void updateState(PlayerAnimations newState) {
+  void updateState(PlayerAnimation newState) {
     state = state.copyWith(currentState: newState);
   }
 
@@ -204,7 +205,7 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
 
   void attack() {
     resetInactivityTimer();
-    updateState(PlayerAnimations.attack);
+    updateState(PlayerAnimation.attack);
     ref.read(spiderProvider.notifier).takeDamage(state.damage);
   }
 
@@ -214,7 +215,7 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
 
     state = state.copyWith(
       isJumping: true,
-      currentState: PlayerAnimations.jump,
+      currentState: PlayerAnimation.jump,
     );
 
     _jumpTimer?.cancel();
@@ -245,23 +246,23 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     resetInactivityTimer();
     state = state.copyWith(
       isJumping: false,
-      currentState: PlayerAnimations.stay,
+      currentState: PlayerAnimation.stay,
     );
   }
 
   void dance() {
-    updateState(PlayerAnimations.dance);
+    updateState(PlayerAnimation.dance);
   }
 
   void move() {
     resetInactivityTimer();
     ref.read(dogProvider.notifier).followPlayer(state.xCoords);
-    updateState(PlayerAnimations.walk);
+    updateState(PlayerAnimation.walk);
   }
 
   void stopMovement() {
     resetInactivityTimer();
-    updateState(PlayerAnimations.stay);
+    updateState(PlayerAnimation.stay);
   }
 
   void moveLeft() {
@@ -313,24 +314,24 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   }
 
   void checkCollisionsDoors() {
-    ref.read(doorProvider.notifier).isAnyDoorNear(state.xCoords);
+    ref.read(doorProvider.notifier).isAnyObjectNear(state.xCoords);
   }
 
   void checkCollisionsCoins() {
-    ref.read(coinProvider.notifier).isAnyCoinNear(state.xCoords);
+    ref.read(coinProvider.notifier).isAnyObjectNear(state.xCoords);
   }
 
   void checkCollisionsChests() {
-    ref.read(chestProvider.notifier).isAnyChestNear(state.xCoords);
+    ref.read(chestProvider.notifier).isAnyObjectNear(state.xCoords);
   }
 
   void checkCollisionsSpiders() {
-    ref.read(spiderProvider.notifier).isAnySpiderNear(state.xCoords);
+    ref.read(spiderProvider.notifier).isAnyEnemyNear(state.xCoords);
 
-    final spiders = ref.read(spiderProvider).spiders;
+    final spiders = ref.read(spiderProvider).enemies;
     final isSpiderNear = spiders.any((spider) =>
-        spider.currentState == SpiderAnimations.walk ||
-        spider.currentState == SpiderAnimations.attack);
+        spider.currentState == SpiderAnimation.walk ||
+        spider.currentState == SpiderAnimation.attack);
 
     _updatePlayerSpeed(isSpiderNear);
     _updateDogBehavior(isSpiderNear);

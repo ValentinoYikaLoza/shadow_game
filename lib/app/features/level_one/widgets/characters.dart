@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/models/data.dart';
+import 'package:shadow_game/app/features/level_one/models/animation.dart';
 import 'package:shadow_game/app/features/level_one/providers/dog_provider.dart';
 import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
-// import 'package:shadow_game/app/features/level_one/providers/shadow_provider.dart';
 import 'package:shadow_game/app/features/level_one/providers/spider_provider.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
 import 'package:shadow_game/app/features/level_one/widgets/spider_widget.dart';
@@ -24,7 +23,7 @@ class CharactersState extends ConsumerState<Characters> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(spiderProvider.notifier).addSpider();
+      ref.read(spiderProvider.notifier).addEnemy();
     });
   }
 
@@ -40,12 +39,12 @@ class CharactersState extends ConsumerState<Characters> {
         widget.child,
         // Enemigo araña
         ...List.generate(
-          spiderState.spiders.length,
+          spiderState.enemies.length,
           (index) {
-            final spider = spiderState.spiders[index];
+            final enemy = spiderState.enemies[index];
             return SpiderWidget(
-              spider: spider,
-              isBoss: index == spiderState.maxSpiders - 1,
+              spider: enemy,
+              isBoss: index == spiderState.maxEnemies - 1,
             );
           },
         ),
@@ -56,23 +55,23 @@ class CharactersState extends ConsumerState<Characters> {
           child: GestureDetector(
             onLongPressDown: (_) {
               setState(() {
-                ref.read(dogProvider.notifier).updateState(ShadowAnimations.bark);
+                ref.read(dogProvider.notifier).updateState(ShadowAnimation.bark);
               });
             },
             onLongPressEnd: (_) {
               setState(() {
-                ref.read(dogProvider.notifier).updateState(ShadowAnimations.sit);
+                ref.read(dogProvider.notifier).updateState(ShadowAnimation.sit);
               });
             },
             onTapUp: (_) {
               setState(() {
-                ref.read(dogProvider.notifier).updateState(ShadowAnimations.sit);
+                ref.read(dogProvider.notifier).updateState(ShadowAnimation.sit);
               });
             },
             child: CustomGif(
-              images: dogState.currentState.state.images,
+              images: dogState.currentState.images,
               width: 80,
-              loop: dogState.currentState.state.loop,
+              loop: dogState.currentState.loop,
               flip: dogState.currentDirection == Directions.left,
             ),
           ),
@@ -86,9 +85,9 @@ class CharactersState extends ConsumerState<Characters> {
               setState(() {});
             },
             child: CustomGif(
-              images: playerState.currentState.state.images,
+              images: playerState.currentState.images,
               width: 50,
-              loop: playerState.currentState.state.loop,
+              loop: playerState.currentState.loop,
               flip: playerState.currentDirection == Directions.left,
             ),
           ),

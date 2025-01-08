@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/models/data.dart';
+import 'package:shadow_game/app/features/level_one/models/animation.dart';
+// import 'package:shadow_game/app/features/level_one/models/data.dart';
 import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
 import 'package:shadow_game/app/features/level_one/providers/spider_provider.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
@@ -49,8 +50,8 @@ class SpiderWidgetState extends ConsumerState<SpiderWidget> {
   @override
   void didUpdateWidget(covariant SpiderWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.spider.currentState == SpiderAnimations.die &&
-        oldWidget.spider.currentState != SpiderAnimations.die) {
+    if (widget.spider.currentState == SpiderAnimation.die &&
+        oldWidget.spider.currentState != SpiderAnimation.die) {
       initOpacity();
     }
   }
@@ -68,32 +69,32 @@ class SpiderWidgetState extends ConsumerState<SpiderWidget> {
     final groundHeight = screenHeight * 0.3;
     return Positioned(
       bottom: widget.isBoss
-          ? widget.spider.currentState == SpiderAnimations.die
+          ? widget.spider.currentState == SpiderAnimation.die
               ? groundHeight - 20
               : groundHeight - 5
           : groundHeight - 2,
       left: widget.spider.xCoords,
       child: GestureDetector(
         onLongPressDown: (_) {
-          widget.spider.currentState == SpiderAnimations.attack
+          widget.spider.currentState == SpiderAnimation.attack
               ? ref.read(playerProvider.notifier).attack()
               : null;
         },
         onLongPressEnd: (_) {
-          ref.read(playerProvider.notifier).updateState(PlayerAnimations.stay);
+          ref.read(playerProvider.notifier).updateState(PlayerAnimation.stay);
         },
         onTapUp: (_) {
-          ref.read(playerProvider.notifier).updateState(PlayerAnimations.stay);
+          ref.read(playerProvider.notifier).updateState(PlayerAnimation.stay);
         },
         child: Opacity(
           opacity: opacity,
           child: CustomGif(
-            images: widget.spider.currentState.state.images,
+            images: widget.spider.currentState.images,
             width: widget.isBoss ? 475 : 95,
-            loop: widget.spider.currentState.state.loop,
+            loop: widget.spider.currentState.loop,
             flip: widget.spider.currentDirection != Directions.left,
             onComplete: () {
-              if (widget.spider.currentState == SpiderAnimations.attack) {
+              if (widget.spider.currentState == SpiderAnimation.attack) {
                 ref
                     .read(playerProvider.notifier)
                     .takeDamage(widget.spider.damage);

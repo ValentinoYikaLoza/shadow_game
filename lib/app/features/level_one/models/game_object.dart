@@ -1,42 +1,46 @@
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/providers/background_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
 
 abstract class GameObject {
   final double xCoords;
   final double width;
 
-  GameObject({required this.xCoords, required this.width});
+  GameObject({
+    required this.xCoords,
+    required this.width,
+  });
 
-  GameObject copyWith({double? xCoords, double? width});
+  GameObject copyWith({
+    double? xCoords,
+    double? width,
+  });
 }
 
-mixin CollisionMixin<T> on StateNotifier<T> {
-  Ref get ref;
+class GameObjectState<T extends GameObject> {
+  final List<T> objects;
 
-  bool isPlayerColliding(double playerX, GameObject object) {
-    final leftBoundary = object.xCoords;
-    final rightBoundary = object.xCoords + object.width;
+  GameObjectState({
+    this.objects = const [],
+  });
 
-    const playerWidth = 50.0;
-    final playerLeftBoundary = playerX;
-    final playerRightBoundary = playerX + (playerWidth / 2);
-
-    return playerRightBoundary >= leftBoundary && playerLeftBoundary <= rightBoundary;
+  GameObjectState<T> copyWith({
+    List<T>? objects,
+  }) {
+    return GameObjectState(
+      objects: objects ?? this.objects,
+    );
   }
+}
 
-  bool canMove() {
-    final playerState = ref.read(playerProvider);
-    return playerState.isBetweenTheLimits;
-  }
+abstract class GameObjectNotifier<T extends GameObject> extends StateNotifier<GameObjectState<T>> {
+  GameObjectNotifier(super.initialState);
 
-  bool canMoveLeft(double distance) {
-    final backgroundState = ref.read(backgroundProvider.notifier);
-    return backgroundState.canMoveLeft(distance);
-  }
-
-  bool canMoveRight(double distance) {
-    final backgroundState = ref.read(backgroundProvider.notifier);
-    return backgroundState.canMoveRight(distance);
-  }
+  void resetData();
+  void addObject({double xCoords = 600});
+  void updateXCoords(double distance);
+  bool canMove();
+  bool canMoveLeft(double distance);
+  bool canMoveRight(double distance);
+  bool isPlayerColliding(double playerX, T object);
+  void isAnyObjectNear(double playerX);
 }

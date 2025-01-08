@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shadow_game/app/config/constants/app_colors.dart';
-import 'package:shadow_game/app/features/level_one/models/data.dart';
+import 'package:shadow_game/app/features/level_one/models/animation.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
 
 final GlobalKey<_LoaderContentState> _loaderKey =
@@ -81,12 +81,12 @@ class _LoaderContentState extends State<_LoaderContent> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomGif(
-                        images: ShadowAnimations.walk.state.images,
+                        images: ShadowAnimation.walk.images,
                         width: 70,
                         loop: true,
                       ),
                       CustomGif(
-                        images: PlayerAnimations.walk.state.images,
+                        images: PlayerAnimation.walk.images,
                         width: 50,
                         loop: true,
                       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/models/data.dart';
+import 'package:shadow_game/app/features/level_one/models/sprite.dart';
 import 'package:shadow_game/app/features/level_one/providers/chest_provider.dart';
 import 'package:shadow_game/app/features/level_one/providers/coin_provider.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
@@ -62,22 +62,22 @@ class ChestWidgetState extends ConsumerState<ChestWidget>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    lastCoinCount = ref.read(coinProvider).coins.length;
+    lastCoinCount = ref.read(coinProvider).objects.length;
   }
 
   @override
   void didUpdateWidget(covariant ChestWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.chest.currentState == ChestSprites.open &&
-        oldWidget.chest.currentState != ChestSprites.open) {
+    if (widget.chest.currentState == ChestSprite.open &&
+        oldWidget.chest.currentState != ChestSprite.open) {
       setState(() {
         isJumping = true;
         _jumpController.forward(from: 0);
       });
     }
 
-    final currentCoinCount = ref.watch(coinProvider).coins.length;
+    final currentCoinCount = ref.watch(coinProvider).objects.length;
     if (currentCoinCount > lastCoinCount) {
       // Reinicia la animación cuando hay una nueva moneda
       _jumpController.reset();
@@ -95,14 +95,14 @@ class ChestWidgetState extends ConsumerState<ChestWidget>
 
   @override
   Widget build(BuildContext context) {
-    final coins = ref.watch(coinProvider).coins;
+    final coins = ref.watch(coinProvider).objects;
     return Stack(
       children: [
         Positioned(
           bottom: widget.groundHeight,
           left: widget.chest.xCoords,
           child: CustomGif(
-            images: widget.chest.currentState.state.images,
+            images: widget.chest.currentState.images,
             width: 65,
             loop: false,
           ),

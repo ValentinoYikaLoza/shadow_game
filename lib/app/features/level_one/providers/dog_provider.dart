@@ -1,20 +1,21 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/models/data.dart';
+import 'package:shadow_game/app/features/level_one/models/animation.dart';
+// import 'package:shadow_game/app/features/level_one/models/data.dart';
 import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
 
 class DogState {
   final double xCoords;
   final double width;
   final double speed;
-  final ShadowAnimations currentState;
+  final ShadowAnimation currentState;
   final Directions currentDirection;
 
   DogState({
     this.xCoords = 100,
     this.width = 80,
     this.speed = 0.2,
-    this.currentState = ShadowAnimations.sit,
+    this.currentState = ShadowAnimation.sit,
     this.currentDirection = Directions.left,
   });
 
@@ -22,7 +23,7 @@ class DogState {
     double? xCoords,
     double? width,
     double? speed,
-    ShadowAnimations? currentState,
+    ShadowAnimation? currentState,
     Directions? currentDirection,
   }) {
     return DogState(
@@ -49,7 +50,7 @@ class DogNotifier extends StateNotifier<DogState> {
     state = DogState();
   }
 
-  void updateState(ShadowAnimations currentState) {
+  void updateState(ShadowAnimation currentState) {
     state = state.copyWith(currentState: currentState);
   }
 
@@ -63,13 +64,13 @@ class DogNotifier extends StateNotifier<DogState> {
   }
 
   void stopMovement() {
-    updateState(ShadowAnimations.sit);
+    updateState(ShadowAnimation.sit);
   }
 
   bool isPlayerBetweenTheLimitsAndWalking() {
     final playerState = ref.read(playerProvider);
     return playerState.isBetweenTheLimits &&
-        playerState.currentState == PlayerAnimations.walk;
+        playerState.currentState == PlayerAnimation.walk;
   }
 
   bool isPlayerColliding(double playerX, DogState dog) {
@@ -96,14 +97,14 @@ class DogNotifier extends StateNotifier<DogState> {
 
   void handlePlayerMoving() {
     final distance = deltaX * state.speed;
-    updateState(ShadowAnimations.walk);
+    updateState(ShadowAnimation.walk);
     move(distance);
   }
 
   void handlePlayerNear(double playerX) {
     updateState(isPlayerBetweenTheLimitsAndWalking()
-        ? ShadowAnimations.sit
-        : ShadowAnimations.walk);
+        ? ShadowAnimation.sit
+        : ShadowAnimation.walk);
     updateDirection(
         playerX > state.xCoords ? Directions.right : Directions.left);
   }
@@ -131,13 +132,13 @@ class DogNotifier extends StateNotifier<DogState> {
   void _moveAway(double distance) {
     updateXCoords(distance);
     updateDirection(Directions.left);
-    updateState(ShadowAnimations.walk);
+    updateState(ShadowAnimation.walk);
   }
 
   void _stopMovingAway(Timer timer) {
     timer.cancel();
     updateDirection(Directions.right);
-    updateState(ShadowAnimations.bark);
+    updateState(ShadowAnimation.bark);
   }
 
   void goBackToThePlayer(double playerX) {
@@ -155,12 +156,12 @@ class DogNotifier extends StateNotifier<DogState> {
 
   void _moveBack(double distance) {
     updateXCoords(-distance);
-    updateState(ShadowAnimations.walk);
+    updateState(ShadowAnimation.walk);
   }
 
   void _stopMovingBack(Timer timer) {
     timer.cancel();
-    updateState(ShadowAnimations.sit);
+    updateState(ShadowAnimation.sit);
   }
 }
 
