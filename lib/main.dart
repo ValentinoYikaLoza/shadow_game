@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadow_game/app/app.dart';
 import 'package:shadow_game/app/config/router/app_router.dart';
@@ -7,17 +8,24 @@ import 'package:shadow_game/app/config/theme/app_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  // Cambia la orientación a horizontal
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
-  ]);
-  // Oculta la barra de estado y la barra de navegación
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-  runApp(const ProviderScope(
-    child: MainApp(),
-  ));
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // Step 2: Change the orientation to landscape after 2 seconds
+  Future.delayed(const Duration(seconds: 3), () {
+    FlutterNativeSplash.remove();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  });
+
+  runApp(
+    const ProviderScope(
+      child: MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -26,7 +34,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Shadow game',
+      title: 'Shadow Game',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.getTheme(),
       routerConfig: AppRouter.getAppRouter(),

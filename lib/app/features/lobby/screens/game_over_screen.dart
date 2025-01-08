@@ -19,7 +19,7 @@ class GameOverScreen extends StatelessWidget {
       child: Stack(
         children: [
           Image.asset(
-            'assets/icon.jpg',
+            'assets/images/lobby/shadow.png',
           ),
           Positioned(
             top: screenSize.height * 0.45,

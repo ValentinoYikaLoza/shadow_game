@@ -193,7 +193,7 @@ class _TutorialCardState extends State<_TutorialCard> {
                   height: 50,
                   alignment: Alignment.center,
                   child: const CustomGif(
-                    images: ['assets/icon.jpg'],
+                    images: ['assets/images/lobby/shadow.png'],
                     width: 50,
                     loop: false,
                   ),

@@ -195,7 +195,7 @@ class _CustomSnackbar extends StatelessWidget {
                   height: 50,
                   alignment: Alignment.center,
                   child: const CustomGif(
-                    images: ['assets/icon.jpg'],
+                    images: ['assets/images/lobby/shadow.png'],
                     width: 50,
                     loop: false,
                   ),
@@ -309,7 +309,7 @@ class _AnimatedSnackbarState extends State<_AnimatedSnackbar> {
                   height: 50,
                   alignment: Alignment.center,
                   child: const CustomGif(
-                    images: ['assets/icon.jpg'],
+                    images: ['assets/images/lobby/shadow.png'],
                     width: 50,
                     loop: false,
                   ),
