@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/models/sprite.dart';
-import 'package:shadow_game/app/features/level_one/providers/chest_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/coin_provider.dart';
+import 'package:shadow_game/app/features/levels/models/sprite.dart';
+import 'package:shadow_game/app/features/levels/providers/chest_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/coin_provider.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
-import 'package:shadow_game/app/features/level_one/widgets/coin_widget.dart';
+import 'package:shadow_game/app/features/levels/widgets/coin_widget.dart';
 
 class ChestWidget extends ConsumerStatefulWidget {
   final Chest chest;

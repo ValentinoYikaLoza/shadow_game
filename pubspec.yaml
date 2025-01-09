@@ -36,6 +36,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/images/level_two/
     - assets/images/level_one/
     - assets/images/level_one/door/
     - assets/images/level_one/chest/

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/providers/dog_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/dog_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/player_provider.dart';
 
 class Gestures extends ConsumerStatefulWidget {
   final Widget child;

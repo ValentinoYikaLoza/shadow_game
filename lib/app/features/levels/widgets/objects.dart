@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/providers/chest_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/door_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/spider_provider.dart';
-import 'package:shadow_game/app/features/level_one/widgets/chest_widget.dart';
-import 'package:shadow_game/app/features/level_one/widgets/door_widget.dart';
+import 'package:shadow_game/app/features/levels/providers/chest_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/door_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/spider_provider.dart';
+import 'package:shadow_game/app/features/levels/widgets/chest_widget.dart';
+import 'package:shadow_game/app/features/levels/widgets/door_widget.dart';
 
 class Objects extends ConsumerStatefulWidget {
   final Widget child;

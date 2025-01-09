@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/providers/background_provider.dart';
-// import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
-import 'package:shadow_game/app/features/level_one/widgets/gestures.dart';
-import 'package:shadow_game/app/features/level_one/widgets/interface_buttons.dart';
-import 'package:shadow_game/app/features/level_one/widgets/objects.dart';
-import 'package:shadow_game/app/features/level_one/widgets/parallax_background.dart';
-import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
+import 'package:shadow_game/app/features/levels/providers/background_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/player_provider.dart';
+import 'package:shadow_game/app/features/levels/widgets/gestures.dart';
+import 'package:shadow_game/app/features/levels/widgets/interface_buttons.dart';
+import 'package:shadow_game/app/features/levels/widgets/objects.dart';
+import 'package:shadow_game/app/features/levels/widgets/parallax_background.dart';
 import 'package:shadow_game/app/features/shared/widgets/skills_dialog.dart';
-import 'package:shadow_game/app/features/level_one/widgets/characters.dart'
+import 'package:shadow_game/app/features/levels/widgets/characters.dart'
     as characters;
 
-class LevelOneScreen extends ConsumerStatefulWidget {
-  const LevelOneScreen({super.key});
+class LevelTwoScreen extends ConsumerStatefulWidget {
+  const LevelTwoScreen({super.key});
 
   @override
-  LevelOneScreenState createState() => LevelOneScreenState();
+  LevelTwoScreenState createState() => LevelTwoScreenState();
 }
 
-class LevelOneScreenState extends ConsumerState<LevelOneScreen> {
+class LevelTwoScreenState extends ConsumerState<LevelTwoScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -47,32 +45,21 @@ class LevelOneScreenState extends ConsumerState<LevelOneScreen> {
                       left: 0,
                       right: 0,
                       child: ParallaxBackground(
-                        imagePath: 'assets/images/level_one/sky.png',
+                        imagePath: 'assets/images/level_two/underground.png',
                         positionLeft: backgroundState.backgroundPosition,
                         speed: playerState.speed,
                         height: MediaQuery.of(context).size.height * 0.8,
                       ),
                     ),
                     Positioned(
-                      bottom: MediaQuery.of(context).size.height * 0.26,
-                      left: backgroundState.cavePosition,
-                      child: const CustomGif(
-                        images: ['assets/images/level_one/cave.png'],
-                        width: 718,
-                        loop: false,
-                      ),
-                    ),
-                    // Ground background always at the bottom
-                    Positioned(
                       bottom: -MediaQuery.of(context).size.height * 0.1,
                       left: 0,
                       right: 0,
                       child: ParallaxBackground(
-                        imagePath: 'assets/images/level_one/ground.png',
+                        imagePath: 'assets/images/level_two/ground.png',
                         positionLeft: backgroundState.backgroundPosition,
                         speed: playerState.speed,
-                        height: MediaQuery.of(context).size.height *
-                            0.4, // Adjust height as needed
+                        height: MediaQuery.of(context).size.height * 0.4,
                       ),
                     ),
                   ],

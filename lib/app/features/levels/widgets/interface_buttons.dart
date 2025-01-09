@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadow_game/app/config/constants/app_colors.dart';
 import 'package:shadow_game/app/config/router/app_router.dart';
-import 'package:shadow_game/app/features/level_one/models/animation.dart';
-import 'package:shadow_game/app/features/level_one/providers/background_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
+import 'package:shadow_game/app/features/levels/models/animation.dart';
+import 'package:shadow_game/app/features/levels/providers/background_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/player_provider.dart';
 import 'package:shadow_game/app/features/lobby/routes/lobby_routes.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_button.dart';
-import 'package:shadow_game/app/features/level_one/widgets/lifebar.dart';
+import 'package:shadow_game/app/features/levels/widgets/lifebar.dart';
 import 'package:shadow_game/app/features/shared/widgets/skills_dialog.dart';
 
 class InterfaceButtons extends ConsumerWidget {

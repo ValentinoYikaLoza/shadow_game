@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadow_game/app/config/router/app_router.dart';
-import 'package:shadow_game/app/features/level_one/models/animation.dart';
-import 'package:shadow_game/app/features/level_one/providers/background_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/chest_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/coin_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/dog_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/door_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/spider_provider.dart';
+import 'package:shadow_game/app/features/levels/models/animation.dart';
+import 'package:shadow_game/app/features/levels/providers/background_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/chest_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/coin_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/dog_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/door_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/spider_provider.dart';
+import 'package:shadow_game/app/features/levels/routes/levels_routes.dart';
 import 'package:shadow_game/app/features/lobby/routes/lobby_routes.dart';
 
 enum PlayerStatus { playing, tutorial, gameOver }
@@ -100,9 +101,9 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     ref.read(doorProvider.notifier).resetData();
     ref.read(coinProvider.notifier).resetData();
     ref.read(chestProvider.notifier).resetData();
-    ref
-        .read(spiderProvider.notifier)
-        .resetData(state.currentStatus == PlayerStatus.tutorial);
+    // ref
+    //     .read(spiderProviderForLevel.notifier)
+    // .resetData(state.currentStatus == PlayerStatus.tutorial);
     ref.read(dogProvider.notifier).resetData();
   }
 
@@ -111,6 +112,10 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     _inactivityTimer = Timer(inactivityDuration, () {
       dance();
     });
+  }
+
+  void goToNextLevel() {
+    AppRouter.go(LevelsRoutes.levelTwo.path);
   }
 
   void stopInactivityTimer() {
@@ -204,7 +209,9 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   void attack() {
     resetInactivityTimer();
     updateAnimation(PlayerAnimation.attack);
-    ref.read(spiderProvider.notifier).takeDamage(state.damage);
+    ref
+        .read(spiderProvider.notifier)
+        .takeDamage(state.damage);
   }
 
   void jump() {
@@ -300,7 +307,9 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     ref.read(doorProvider.notifier).updateXCoords(distance);
     ref.read(coinProvider.notifier).updateXCoords(distance);
     ref.read(chestProvider.notifier).updateXCoords(distance);
-    ref.read(spiderProvider.notifier).updateXCoords(distance);
+    ref
+        .read(spiderProvider.notifier)
+        .updateXCoords(distance);
     ref.read(backgroundProvider.notifier).updateXCoords(distance);
   }
 
@@ -324,7 +333,9 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   }
 
   void checkCollisionsSpiders() {
-    ref.read(spiderProvider.notifier).isAnyEnemyNear(state.xCoords);
+    ref
+        .read(spiderProvider.notifier)
+        .isAnyEnemyNear(state.xCoords);
 
     final spiders = ref.read(spiderProvider).enemies;
     final isSpiderNear = spiders.any((spider) =>

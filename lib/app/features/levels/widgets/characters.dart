@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/models/animation.dart';
-import 'package:shadow_game/app/features/level_one/providers/dog_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/spider_provider.dart';
+import 'package:shadow_game/app/features/levels/models/animation.dart';
+import 'package:shadow_game/app/features/levels/providers/dog_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/player_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/spider_provider.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
-import 'package:shadow_game/app/features/level_one/widgets/spider_widget.dart';
+import 'package:shadow_game/app/features/levels/widgets/spider_widget.dart';
 
 class Characters extends ConsumerStatefulWidget {
   final Widget child;
@@ -55,17 +55,23 @@ class CharactersState extends ConsumerState<Characters> {
           child: GestureDetector(
             onLongPressDown: (_) {
               setState(() {
-                ref.read(dogProvider.notifier).updateAnimation(ShadowAnimation.bark);
+                ref
+                    .read(dogProvider.notifier)
+                    .updateAnimation(ShadowAnimation.bark);
               });
             },
             onLongPressEnd: (_) {
               setState(() {
-                ref.read(dogProvider.notifier).updateAnimation(ShadowAnimation.sit);
+                ref
+                    .read(dogProvider.notifier)
+                    .updateAnimation(ShadowAnimation.sit);
               });
             },
             onTapUp: (_) {
               setState(() {
-                ref.read(dogProvider.notifier).updateAnimation(ShadowAnimation.sit);
+                ref
+                    .read(dogProvider.notifier)
+                    .updateAnimation(ShadowAnimation.sit);
               });
             },
             child: CustomGif(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shadow_game/app/config/constants/app_colors.dart';
 import 'package:shadow_game/app/config/router/app_router.dart';
-import 'package:shadow_game/app/features/level_one/routes/level_one_routes.dart';
+import 'package:shadow_game/app/features/levels/routes/levels_routes.dart';
 import 'package:shadow_game/app/features/lobby/routes/lobby_routes.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_button.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
@@ -39,7 +39,7 @@ class StartGameScreen extends StatelessWidget {
               width: screenSize.width * 0.5,
               onPressed: () {
                 Loader.show();
-                AppRouter.go(LevelOneRoutes.levelOne.path);
+                AppRouter.go(LevelsRoutes.levelOne.path);
                 Loader.dissmiss();
               },
             ),

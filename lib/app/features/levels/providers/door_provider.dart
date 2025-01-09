@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/models/game_object.dart';
-import 'package:shadow_game/app/features/level_one/models/sprite.dart';
-import 'package:shadow_game/app/features/level_one/providers/background_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
+import 'package:shadow_game/app/features/levels/models/game_object.dart';
+import 'package:shadow_game/app/features/levels/models/sprite.dart';
+import 'package:shadow_game/app/features/levels/providers/background_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/player_provider.dart';
 
 enum DoorType { start, finish }
 

@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/player_provider.dart';
 
 class BackgroundState {
   final double xCoords;
@@ -71,10 +71,15 @@ class BackgroundNotifier extends StateNotifier<BackgroundState> {
     return newPosition < state.rightLimit;
   }
 
-  setRightLimit(double rightLimit) {
+  void setRightLimit(double rightLimit) {
     state = state.copyWith(
       rightLimit: rightLimit,
-      cavePosition: rightLimit
+    );
+  }
+
+  void addCave(double cavePosition) {
+    state = state.copyWith(
+      cavePosition: cavePosition,
     );
   }
 }

@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadow_game/app/features/level_one/models/animation.dart';
+import 'package:shadow_game/app/features/levels/models/animation.dart';
 // import 'package:shadow_game/app/features/level_one/models/data.dart';
-import 'package:shadow_game/app/features/level_one/models/enemy.dart';
-import 'package:shadow_game/app/features/level_one/providers/background_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/chest_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/dog_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/door_provider.dart';
-import 'package:shadow_game/app/features/level_one/providers/player_provider.dart';
+import 'package:shadow_game/app/features/levels/models/enemy.dart';
+import 'package:shadow_game/app/features/levels/providers/background_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/chest_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/dog_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/door_provider.dart';
+import 'package:shadow_game/app/features/levels/providers/player_provider.dart';
 import 'package:shadow_game/app/features/shared/widgets/snackbar.dart';
 
 class Spider extends Enemy {
@@ -216,13 +216,15 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
             doorType: DoorType.finish,
           );
 
+      ref.read(backgroundProvider.notifier).addCave(spider.xCoords + 150);
+
       final playerX = ref.read(playerProvider).xCoords;
       ref.read(dogProvider.notifier).goBackToThePlayer(playerX);
       SnackbarService.show('¡Felicidades haz completado el primer nivel!',
           type: SnackbarType.animated);
     });
 
-    final lastPosition = backgroundPosition + 300;
+    final lastPosition = backgroundPosition + 1420;
     ref.read(backgroundProvider.notifier).setRightLimit(lastPosition);
   }
 

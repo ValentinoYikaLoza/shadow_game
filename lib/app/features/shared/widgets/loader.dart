@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shadow_game/app/config/constants/app_colors.dart';
-import 'package:shadow_game/app/features/level_one/models/animation.dart';
+import 'package:shadow_game/app/features/levels/models/animation.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
 
 final GlobalKey<_LoaderContentState> _loaderKey =
