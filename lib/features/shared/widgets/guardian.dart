@@ -49,8 +49,7 @@ class Guardian extends SpriteAnimationComponent {
 
   void updateDirection(bool newIsGoingRight) {
     if (isGoingRight != newIsGoingRight) {
-      flipHorizontally();
-      position.x += size.x * (isGoingRight ? 1 : -1);
+      flipHorizontallyAroundCenter();
       isGoingRight = newIsGoingRight;
     }
   }
@@ -69,7 +68,7 @@ class Guardian extends SpriteAnimationComponent {
     }
 
     // Mantener la mascota siempre a la derecha del jugador
-    final targetX = player.position.x + offset + 20;
+    final targetX = player.position.x - offset - 30;
 
     // Interpolar suavemente la posición actual hacia la posición objetivo
     position.x += (targetX - position.x) * 0.1;

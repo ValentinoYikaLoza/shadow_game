@@ -45,7 +45,7 @@ class Player extends SpriteAnimationComponent {
           position: position,
           size: Vector2(50, 50),
         ) {
-    rightScreenLimitBuffer = gameRef.size.x - 200;
+    rightScreenLimitBuffer = gameRef.size.x - 300;
     leftScreenLimitBuffer = 100;
     initialY = position.y;
   }
@@ -74,8 +74,7 @@ class Player extends SpriteAnimationComponent {
 
   void updateDirection(bool newIsGoingRight) {
     if (isGoingRight != newIsGoingRight) {
-      flipHorizontally();
-      position.x += size.x * (isGoingRight ? 1 : -1);
+      flipHorizontallyAroundCenter();
       isGoingRight = newIsGoingRight;
     }
   }
@@ -194,21 +193,18 @@ class Player extends SpriteAnimationComponent {
       for (var tree in (gameRef as LevelOneScreen).trees) {
         tree.position.x -= (speed + 100) * dt;
       }
+      (gameRef as LevelOneScreen).door.position.x -= (speed + 100) * dt;
+      (gameRef as LevelOneScreen).enemy.position.x -= (speed + 100) * dt;
       speed = 0;
     } else if (isMoving &&
         !isGoingRight &&
         (position.x < leftScreenLimitBuffer)) {
-      if ((gameRef as LevelOneScreen).trees.first.position.x >= 400) {
-        background.updateVelocity(0);
-        for (var tree in (gameRef as LevelOneScreen).trees) {
-          tree.position.x -= 0 * dt;
-        }
-      } else {
-        background.updateVelocity(speed);
-        for (var tree in (gameRef as LevelOneScreen).trees) {
-          tree.position.x -= (speed - 100) * dt;
-        }
+      background.updateVelocity(speed);
+      for (var tree in (gameRef as LevelOneScreen).trees) {
+        tree.position.x -= (speed - 100) * dt;
       }
+      (gameRef as LevelOneScreen).door.position.x -= (speed - 100) * dt;
+      (gameRef as LevelOneScreen).enemy.position.x -= (speed - 100) * dt;
       speed = 0;
     } else {
       background.updateVelocity(0);

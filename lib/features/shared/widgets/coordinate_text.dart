@@ -19,6 +19,6 @@ class CoordinateText extends TextComponent {
 
   void updateCoordinates(Vector2 position) {
     text =
-        'X: ${position.x.toStringAsFixed(2)}, Y: ${position.y.toStringAsFixed(2)}';
+        'L: ${position.x.toStringAsFixed(2)}, R: ${position.y.toStringAsFixed(2)}';
   }
 }

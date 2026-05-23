@@ -28,7 +28,6 @@ flutter:
     - assets/images/level_one/animations/
     - assets/images/level_one/chest/
     - assets/images/level_one/door/
-    - assets/images/level_one/spider/
     - assets/images/level_one/trees/
     - assets/images/lobby/
     - assets/images/player/
@@ -47,3 +46,6 @@ flutter:
     - assets/images/shared/life/
     - assets/images/shared/speed/
     - assets/images/shared/icons/
+    - assets/images/spider/stay/
+    - assets/images/spider/attack/
+    - assets/images/spider/walk/

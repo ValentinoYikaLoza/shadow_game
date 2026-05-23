@@ -5,9 +5,11 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:shadow_game/features/shared/widgets/background.dart';
 import 'package:shadow_game/features/shared/widgets/button.dart';
+import 'package:shadow_game/features/shared/widgets/door.dart';
 import 'package:shadow_game/features/shared/widgets/guardian.dart';
 import 'package:shadow_game/features/shared/widgets/hud.dart';
 import 'package:shadow_game/features/shared/widgets/player.dart';
+import 'package:shadow_game/features/shared/widgets/spider.dart';
 import 'package:shadow_game/features/shared/widgets/tree.dart';
 
 class LevelOneScreen extends FlameGame {
@@ -20,8 +22,10 @@ class LevelOneScreen extends FlameGame {
   late HudComponent hud;
   late Player player;
   late Guardian shadow;
+  late Spider enemy;
   double velocity = 0;
   late TreeSprite tree;
+  late DoorSprite door;
   late double treeSpacing;
   List<TreeSprite> trees = [];
   late double lastTreePosition;
@@ -33,9 +37,10 @@ class LevelOneScreen extends FlameGame {
     'level_one/trees/tree4.png',
     'level_one/trees/tree5.png',
     'level_one/trees/tree6.png',
+    'level_one/trees/tree7.png',
   ];
 
-  List<double> treePositions = [400, 450, 587, 620, 730];
+  List<double> treePositions = [400, 450, 587, 620, 730, 865, 900, 1060];
 
   @override
   Future<void> onLoad() async {
@@ -52,6 +57,8 @@ class LevelOneScreen extends FlameGame {
     hud = HudComponent();
     add(hud);
 
+    door = await _loadDoor(-120, imp);
+
     _generateInitialTrees();
 
     player = await _loadPlayer(Vector2(50, screenHeight / 2 + 50));
@@ -59,6 +66,9 @@ class LevelOneScreen extends FlameGame {
 
     shadow = await _loadGuardian(Vector2(80, screenHeight / 2 + 40));
     add(shadow);
+
+    enemy = await _loadSpider(Vector2(1200, screenHeight / 2 + 50));
+    add(enemy);
 
     attack = await _loadButton('shared/icons/attack.png', 60, screenHeight - 96,
         Vector2(60, 60), player.attack);
@@ -89,6 +99,18 @@ class LevelOneScreen extends FlameGame {
     final treeType = treeTypes[Random().nextInt(treeTypes.length)];
     tree = await _loadTree(treeType, xPosition);
     trees.add(tree);
+  }
+
+  Future<DoorSprite> _loadDoor(double position, VoidCallback? onPressed) async {
+    final door = DoorSprite(
+      gameRef: this,
+      closeDoor: await loadSprite('level_one/door/closedDoor.png'),
+      openDoor: await loadSprite('level_one/door/openedDoor.png'),
+      position: Vector2(position, size.y / 2 - 20),
+      onPressed: onPressed,
+    );
+    add(door);
+    return door;
   }
 
   Future<TreeSprite> _loadTree(String image, double position) async {
@@ -162,6 +184,27 @@ class LevelOneScreen extends FlameGame {
     return guardian;
   }
 
+  Future<Spider> _loadSpider(Vector2 position) async {
+    final spiderAnimation = await loadSpriteAnimation(
+      'spider/stay/stay.png',
+      SpriteAnimationData.sequenced(
+        amount: 5,
+        stepTime: 0.15,
+        textureSize: Vector2(120, 90),
+      ),
+    );
+
+    final spider = Spider(
+      gameRef: this,
+      background: ground,
+      animation: spiderAnimation,
+      player: player,
+      position: position,
+    );
+    await spider.loadAnimations();
+    return spider;
+  }
+
   imp() {
     print('hola');
   }
@@ -171,8 +214,8 @@ class LevelOneScreen extends FlameGame {
     // TODO: implement update
     super.update(dt);
     if (player.isMoving) {
-      generateTreeOnPlayerMovement();
-      print('> cantidad de arboles: ${trees.length}');
+      // generateTreeOnPlayerMovement();
+      //print('> cantidad de arboles: ${trees.length}');
     }
   }
 }

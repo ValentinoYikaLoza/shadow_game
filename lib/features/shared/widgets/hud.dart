@@ -1,9 +1,12 @@
 import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
+
 import 'package:shadow_game/features/shared/widgets/joystick.dart';
 
-class HudComponent extends PositionComponent{
+class HudComponent extends PositionComponent {
   late Joystick joystick;
+
+  HudComponent() : super(priority: 100);
 
   @override
   void onLoad() {
