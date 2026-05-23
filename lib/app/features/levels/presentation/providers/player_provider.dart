@@ -9,8 +9,8 @@ import 'package:shadow_game/app/features/levels/presentation/providers/coin_prov
 import 'package:shadow_game/app/features/levels/presentation/providers/dog_provider.dart';
 import 'package:shadow_game/app/features/levels/presentation/providers/door_provider.dart';
 import 'package:shadow_game/app/features/levels/presentation/providers/spider_provider.dart';
-import 'package:shadow_game/app/features/levels/presentation/routes/levels_routes.dart';
 import 'package:shadow_game/app/features/lobby/presentation/routes/lobby_routes.dart';
+import 'package:shadow_game/app/shared/widgets/snackbar.dart';
 
 enum PlayerStatus { playing, tutorial, gameOver }
 
@@ -124,7 +124,7 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   }
 
   void goToNextLevel() {
-    AppRouter.go(LevelsRoutes.levelTwo.path);
+    SnackbarService.show('Próximamente', type: SnackbarType.animated);
   }
 
   void stopInactivityTimer() {
