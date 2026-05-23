@@ -17,7 +17,17 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
 
   final Ref ref;
   Timer? moveTimer;
-  Timer? disapearTimer;
+  final List<Timer> _deathTimers = [];
+
+  @override
+  void dispose() {
+    moveTimer?.cancel();
+    for (final timer in _deathTimers) {
+      timer.cancel();
+    }
+    _deathTimers.clear();
+    super.dispose();
+  }
 
   @override
   void resetData(bool isTutorialMode) {
@@ -88,16 +98,20 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
     final playerLeftBoundary = playerX;
     final playerRightBoundary = playerX + (playerWidth / 2);
 
-    bool colisionHorizontal = playerRightBoundary >= leftBoundary &&
+    final isCollidingHorizontally = playerRightBoundary >= leftBoundary &&
         playerLeftBoundary <= rightBoundary;
 
-    return colisionHorizontal;
+    return isCollidingHorizontally;
   }
 
   @override
   void startMoving() {
     moveTimer?.cancel();
     moveTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       final playerState = ref.read(playerProvider);
       state = state.copyWith(
         enemies: state.enemies.map((spider) {
@@ -171,7 +185,8 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
   }
 
   void _handleLastSpiderDeath(Spider spider, double backgroundPosition) {
-    Future.delayed(const Duration(seconds: 2), () {
+    _deathTimers.add(Timer(const Duration(seconds: 2), () {
+      if (!mounted) return;
       state = EnemyState<Spider>(); // Clear all spiders
       ref.read(chestProvider.notifier).addObject(
             xCoords: spider.xCoords + 50,
@@ -188,14 +203,15 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
       ref.read(dogProvider.notifier).goBackToThePlayer(playerX);
       SnackbarService.show('¡Felicidades haz completado el primer nivel!',
           type: SnackbarType.animated);
-    });
+    }));
 
     final lastPosition = backgroundPosition + 1420;
     ref.read(backgroundProvider.notifier).setRightLimit(lastPosition);
   }
 
   void _handleNonLastSpiderDeath(Spider spider) {
-    Future.delayed(const Duration(seconds: 2), () {
+    _deathTimers.add(Timer(const Duration(seconds: 2), () {
+      if (!mounted) return;
       ref.read(chestProvider.notifier).addObject(xCoords: spider.xCoords + 50);
       final playerX = ref.read(playerProvider).xCoords;
       ref.read(dogProvider.notifier).goBackToThePlayer(playerX);
@@ -205,11 +221,11 @@ class SpiderNotifier extends EnemyNotifier<Spider> {
       addEnemy(
         xCoords: spider.xCoords + randomDistance,
       );
-    });
+    }));
   }
 }
 
 final spiderProvider =
-    StateNotifierProvider<SpiderNotifier, EnemyState<Spider>>((ref) {
+    StateNotifierProvider.autoDispose<SpiderNotifier, EnemyState<Spider>>((ref) {
   return SpiderNotifier(ref);
 });

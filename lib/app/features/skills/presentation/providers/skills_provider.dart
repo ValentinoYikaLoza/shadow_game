@@ -150,7 +150,7 @@ class SkillNotifier extends StateNotifier<SkillState> {
           currentLevelDamage: newLevel,
           currentDamageImage: _getSkillGif(skillType, newLevel),
         );
-        playerNotifier.updateDamage(newLevel == 2 ? 2 : 2);
+        playerNotifier.updateDamage(newLevel == 2 ? 2 : 3);
         break;
       case SkillType.endurance:
         state = state.copyWith(

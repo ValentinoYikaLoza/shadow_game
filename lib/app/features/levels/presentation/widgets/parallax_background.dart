@@ -21,15 +21,17 @@ class ParallaxBackground extends StatelessWidget {
         final screenWidth = constraints.maxWidth;
         final imageHeight = height ?? constraints.maxHeight;
 
-        // Calculate how many images we need to cover the width
-        final count = (screenWidth / screenWidth).ceil() + 2;
+        // Each background image spans the full viewport width, so three copies
+        // (previous, current, next) are enough to keep the wrap seamless while
+        // it scrolls.
+        const tileCount = 3;
 
         return SizedBox(
           width: screenWidth,
           height: imageHeight,
           child: Stack(
             fit: StackFit.passthrough,
-            children: List.generate(count, (index) {
+            children: List.generate(tileCount, (index) {
               double actualPosition = positionLeft % screenWidth;
               double xPosition =
                   (index * screenWidth + actualPosition) - screenWidth;

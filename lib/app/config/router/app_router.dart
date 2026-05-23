@@ -4,15 +4,11 @@ import 'package:shadow_game/app/config/router/router.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
-enum RouterType { 
-  mobile
-}
-
 class AppRouter {
-
   static GoRouter getAppRouter() {
     return router;
   }
+
   static void go(String location) {
     router.go(location);
   }
@@ -21,7 +17,7 @@ class AppRouter {
     router.push(location);
   }
 
-  static void pop(String location) {
+  static void pop() {
     router.pop();
   }
 

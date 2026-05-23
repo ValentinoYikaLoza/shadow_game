@@ -95,21 +95,30 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   static const leftLimit = 20.0;
   static const deltaX = 10.0;
 
+  @override
+  void dispose() {
+    _jumpTimer?.cancel();
+    _fallTimer?.cancel();
+    _inactivityTimer?.cancel();
+    super.dispose();
+  }
+
   void resetData() {
+    final isTutorial = state.currentStatus == PlayerStatus.tutorial;
     state = PlayerState(
         maxLives: 10, currentLives: 10, currentStatus: PlayerStatus.playing);
     ref.read(doorProvider.notifier).resetData();
     ref.read(coinProvider.notifier).resetData();
     ref.read(chestProvider.notifier).resetData();
-    // ref
-    //     .read(spiderProviderForLevel.notifier)
-    // .resetData(state.currentStatus == PlayerStatus.tutorial);
+    ref.read(spiderProvider.notifier).resetData(isTutorial);
+    ref.read(backgroundProvider.notifier).resetData();
     ref.read(dogProvider.notifier).resetData();
   }
 
   void startInactivityTimer() {
     stopInactivityTimer();
     _inactivityTimer = Timer(inactivityDuration, () {
+      if (!mounted) return;
       dance();
     });
   }
@@ -225,6 +234,10 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
 
     _jumpTimer?.cancel();
     _jumpTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       if (state.yCoords <= 25) {
         updateCoords(state.xCoords, state.yCoords + 5);
       } else {
@@ -238,6 +251,10 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     resetInactivityTimer();
     _fallTimer?.cancel();
     _fallTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       if (state.yCoords >= 5) {
         updateCoords(state.xCoords, state.yCoords - 5);
       } else {
@@ -280,7 +297,7 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     final newPosition = state.xCoords + distance;
 
     updateDirection(Directions.left);
-    updateCoordsOfEnviromentsEntities(distance);
+    updateEnvironmentEntitiesCoords(distance);
     checkCollisions();
     updateCoords(newPosition, state.yCoords);
     move();
@@ -296,13 +313,13 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     final newPosition = state.xCoords + distance;
 
     updateCoords(newPosition, state.yCoords);
-    updateCoordsOfEnviromentsEntities(distance);
+    updateEnvironmentEntitiesCoords(distance);
     checkCollisions();
     updateDirection(Directions.right);
     move();
   }
 
-  void updateCoordsOfEnviromentsEntities(double distance) {
+  void updateEnvironmentEntitiesCoords(double distance) {
     if (state.currentStatus == PlayerStatus.tutorial) return;
     ref.read(doorProvider.notifier).updateXCoords(distance);
     ref.read(coinProvider.notifier).updateXCoords(distance);
@@ -357,6 +374,6 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
 }
 
 final playerProvider =
-    StateNotifierProvider<PlayerNotifier, PlayerState>((ref) {
+    StateNotifierProvider.autoDispose<PlayerNotifier, PlayerState>((ref) {
   return PlayerNotifier(ref);
 });

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadow_game/app/features/levels/domain/entities/animations.dart';
-// import 'package:shadow_game/app/features/level_one/models/data.dart';
 import 'package:shadow_game/app/features/levels/presentation/providers/player_provider.dart';
 
 class DogState {
@@ -46,6 +45,13 @@ class DogNotifier extends StateNotifier<DogState> {
   static const double followDistance = 50.0;
   static const deltaX = 10.0;
 
+  @override
+  void dispose() {
+    _goAwayTimer?.cancel();
+    _goBackTimer?.cancel();
+    super.dispose();
+  }
+
   void resetData() {
     state = DogState();
   }
@@ -81,10 +87,10 @@ class DogNotifier extends StateNotifier<DogState> {
     final playerLeftBoundary = playerX;
     final playerRightBoundary = playerX + (playerWidth / 2);
 
-    bool colisionHorizontal = playerRightBoundary >= leftBoundary &&
+    final isCollidingHorizontally = playerRightBoundary >= leftBoundary &&
         playerLeftBoundary <= rightBoundary;
 
-    return colisionHorizontal;
+    return isCollidingHorizontally;
   }
 
   void followPlayer(double playerX) {
@@ -121,6 +127,10 @@ class DogNotifier extends StateNotifier<DogState> {
 
     _goAwayTimer?.cancel();
     _goAwayTimer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       if (playerX - state.xCoords <= 300) {
         _moveAway(distance);
       } else {
@@ -146,6 +156,10 @@ class DogNotifier extends StateNotifier<DogState> {
 
     _goBackTimer?.cancel();
     _goBackTimer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       if (!isPlayerColliding(playerX, state)) {
         _moveBack(distance);
       } else {

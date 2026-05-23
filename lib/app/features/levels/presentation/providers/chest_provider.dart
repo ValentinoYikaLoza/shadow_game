@@ -66,10 +66,10 @@ class ChestNotifier extends GameObjectNotifier<Chest> {
     final playerLeftBoundary = playerX;
     final playerRightBoundary = playerX + (playerWidth / 2);
 
-    bool colisionHorizontal = playerRightBoundary >= leftBoundary &&
+    final isCollidingHorizontally = playerRightBoundary >= leftBoundary &&
         playerLeftBoundary <= rightBoundary;
 
-    return colisionHorizontal;
+    return isCollidingHorizontally;
   }
 
   @override
