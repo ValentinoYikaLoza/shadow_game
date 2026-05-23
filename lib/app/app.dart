@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shadow_game/app/features/shared/widgets/loader.dart';
-import 'package:shadow_game/app/features/shared/widgets/snackbar.dart';
+import 'package:shadow_game/app/shared/widgets/loader.dart';
+import 'package:shadow_game/app/shared/widgets/snackbar.dart';
 
 class App extends StatelessWidget {
   const App({

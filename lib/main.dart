@@ -6,10 +6,14 @@ import 'package:shadow_game/app/app.dart';
 import 'package:shadow_game/app/config/router/app_router.dart';
 import 'package:shadow_game/app/config/theme/app_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shadow_game/di.dart';
 
-void main() {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // Dependency injection (loads SharedPreferences) before the first frame.
+  await setup();
 
   // Step 2: Change the orientation to landscape after 2 seconds
   Future.delayed(const Duration(seconds: 3), () {
