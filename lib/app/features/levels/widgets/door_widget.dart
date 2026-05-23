@@ -26,14 +26,14 @@ class DoorWidget extends ConsumerWidget {
           door.doorType == DoorType.start
               ? CustomButton(
                   imagePath: 'assets/gifs/home.gif',
-                  width: 120,
+                  width: 176,
                   onPressed: () {
                     AppRouter.go(LobbyRoutes.startGame.path);
                   },
                 )
               : CustomButton(
                   imagePath: 'assets/gifs/next_level.gif',
-                  width: 120,
+                  width: 176,
                   onPressed: () {
                     ref.read(playerProvider.notifier).goToNextLevel();
                   },

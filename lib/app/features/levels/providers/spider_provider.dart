@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadow_game/app/features/levels/models/animation.dart';
-// import 'package:shadow_game/app/features/level_one/models/data.dart';
 import 'package:shadow_game/app/features/levels/models/enemy.dart';
 import 'package:shadow_game/app/features/levels/providers/background_provider.dart';
 import 'package:shadow_game/app/features/levels/providers/chest_provider.dart';

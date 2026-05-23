@@ -35,8 +35,8 @@ class LevelTwoScreenState extends ConsumerState<LevelTwoScreen> {
         child: InterfaceButtons(
           child: characters.Characters(
             //porque no permite poner el nombre Characters por si solo porque ya hay otra clase con ese nombre
-            child: Gestures(
-              child: Objects(
+            child: Objects(
+              child: Gestures(
                 child: Stack(
                   fit: StackFit.expand,
                   children: [

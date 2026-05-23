@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadow_game/app/config/constants/app_colors.dart';
-import 'package:shadow_game/app/config/router/app_router.dart';
 import 'package:shadow_game/app/features/levels/models/animation.dart';
 import 'package:shadow_game/app/features/levels/providers/background_provider.dart';
 import 'package:shadow_game/app/features/levels/providers/player_provider.dart';
-import 'package:shadow_game/app/features/lobby/routes/lobby_routes.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_gif.dart';
 import 'package:shadow_game/app/features/shared/widgets/custom_button.dart';
 import 'package:shadow_game/app/features/levels/widgets/lifebar.dart';
@@ -23,7 +21,7 @@ class InterfaceButtons extends ConsumerWidget {
     final backgroundState = ref.watch(backgroundProvider);
     final playerState = ref.watch(playerProvider);
     final screenSize = MediaQuery.of(context).size;
-    final groundHeight = screenSize.height * 0.13;
+    final groundHeight = screenSize.height * 0.1;
     return Stack(
       children: [
         child,
@@ -88,18 +86,18 @@ class InterfaceButtons extends ConsumerWidget {
               },
             ),
           ),
-        if (playerState.currentStatus != PlayerStatus.tutorial)
-          Positioned(
-            bottom: screenSize.height * 0.08,
-            left: screenSize.width / 2 - (screenSize.width * 0.15) / 2,
-            child: CustomButton(
-              imagePath: 'assets/images/lobby/tutorial.png',
-              width: screenSize.width * 0.15,
-              onPressed: () {
-                AppRouter.push(LobbyRoutes.tutorial.path);
-              },
-            ),
-          ),
+        // if (playerState.currentStatus != PlayerStatus.tutorial)
+        //   Positioned(
+        //     bottom: screenSize.height * 0.08,
+        //     left: screenSize.width / 2 - (screenSize.width * 0.15) / 2,
+        //     child: CustomButton(
+        //       imagePath: 'assets/images/lobby/tutorial.png',
+        //       width: screenSize.width * 0.15,
+        //       onPressed: () {
+        //         AppRouter.push(LobbyRoutes.tutorial.path);
+        //       },
+        //     ),
+        //   ),
       ],
     );
   }
